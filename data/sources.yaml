@@ -1,0 +1,74 @@
+# Heart Disease Prediction - Data Sources Registry
+# Document all datasets used in this project
+
+sources:
+  - name: "Cleveland Heart Disease Dataset"
+    url: "https://archive.ics.uci.edu/ml/datasets/heart+disease"
+    license: "CC BY 4.0"
+    dataset_version: "Original Cleveland subset"
+    download_date: "2024-01-01"
+    description: >
+      The Cleveland database is the most commonly used dataset for heart disease
+      prediction research. Contains 303 instances with 14 attributes.
+    population: "Patients from Cleveland Clinic Foundation"
+    features: 14
+    records: 303
+    target: "Heart disease presence (1 = disease, 0 = no disease)"
+    target_encoding: "Binary: 0 = no disease, 1 = disease (values 1-4 mapped to 1)"
+    missing_values: "Several features have ? marks treated as missing"
+    usage_notes: >
+      Primary training dataset. Single duplicate row detected and removed.
+      302 unique patients after deduplication.
+
+  - name: "Hungarian Heart Disease Dataset"
+    url: "https://archive.ics.uci.edu/ml/datasets/heart+disease"
+    license: "CC BY 4.0"
+    dataset_version: "Hungarian subset"
+    description: >
+      Subset from the Hungarian Institute of Cardiology, Budapest.
+      Compatible feature schema with Cleveland dataset.
+    population: "Hungarian patients"
+    features: 14
+    records: 294
+    target: "Heart disease presence"
+    usage_notes: >
+      Can be used for external validation if feature schema matches.
+
+  - name: "Switzerland Heart Disease Dataset"
+    url: "https://archive.ics.uci.edu/ml/datasets/heart+disease"
+    license: "CC BY 4.0"
+    dataset_version: "Swiss subset"
+    description: >
+      Subset from University Hospital, Zurich, Switzerland.
+    population: "Swiss patients"
+    features: 14
+    records: 123
+    target: "Heart disease presence"
+    usage_notes: >
+      Smaller dataset, useful for external validation.
+
+  - name: "Long Beach VA Heart Disease Dataset"
+    url: "https://archive.ics.uci.edu/ml/datasets/heart+disease"
+    license: "CC BY 4.0"
+    dataset_version: "VA subset"
+    description: >
+      Subset from Long Beach Veterans Administration Medical Center.
+    population: "US Veterans"
+    features: 14
+    records: 200
+    target: "Heart disease presence"
+    usage_notes: >
+      VA population may have different risk profile.
+
+data_quality_notes:
+  - "Cleveland dataset has 1 duplicate row (38,1,2,138,175,0,1,173,0,0,2,4,2,1)"
+  - "Missing values represented as '?' in original, converted to NaN"
+  - "Target variable 'num' (0-4) binarized: 0 = no disease, 1-4 = disease"
+  - "Features 'ca' and 'thal' have missing values in some subsets"
+  - "Dataset is from 1988, may not reflect modern patient populations"
+
+compatibility_notes:
+  - "All four UCI subsets share the same 14-feature schema"
+  - "Feature definitions are consistent across subsets"
+  - "Target encoding needs verification for each subset"
+  - "Population differences may affect model transferability"

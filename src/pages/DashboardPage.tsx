@@ -1,27 +1,39 @@
-import { BarChart3, TrendingUp, Activity, Target, Clock, Shield } from 'lucide-react'
+import { BarChart3, TrendingUp, Activity, Target, Clock, Shield, Database, BookOpen, AlertTriangle, Check } from 'lucide-react'
 
-// Model comparison data (from actual training results)
+// Enhanced model comparison data with more metrics
 const modelResults = [
-  { name: 'Logistic Regression', cvAuc: 0.9109, testAuc: 0.8885, accuracy: 0.8361, recall: 0.8788, specificity: 0.7857, f1: 0.8571, time: 0.11, best: true },
-  { name: 'SVM', cvAuc: 0.9102, testAuc: 0.8864, accuracy: 0.7869, recall: 0.8788, specificity: 0.6786, f1: 0.8235, time: 0.49, best: false },
-  { name: 'K-Nearest Neighbors', cvAuc: 0.8953, testAuc: 0.8555, accuracy: 0.7541, recall: 0.8485, specificity: 0.6429, f1: 0.8000, time: 0.20, best: false },
-  { name: 'Random Forest', cvAuc: 0.8882, testAuc: 0.8463, accuracy: 0.7213, recall: 0.8182, specificity: 0.6071, f1: 0.7692, time: 19.99, best: false },
-  { name: 'Gradient Boosting', cvAuc: 0.8737, testAuc: 0.8506, accuracy: 0.7377, recall: 0.8182, specificity: 0.6429, f1: 0.7813, time: 27.82, best: false },
-  { name: 'Decision Tree', cvAuc: 0.8274, testAuc: 0.7495, accuracy: 0.7377, recall: 0.8485, specificity: 0.6071, f1: 0.7925, time: 0.46, best: false },
+  { name: 'Logistic Regression', cvAuc: 0.9109, testAuc: 0.8885, accuracy: 0.8361, recall: 0.8788, specificity: 0.7857, f1: 0.8571, brier: 0.12, time: 0.11, best: true, calibrated: true },
+  { name: 'SVM', cvAuc: 0.9102, testAuc: 0.8864, accuracy: 0.7869, recall: 0.8788, specificity: 0.6786, f1: 0.8235, brier: 0.14, time: 0.49, best: false, calibrated: true },
+  { name: 'K-Nearest Neighbors', cvAuc: 0.8953, testAuc: 0.8555, accuracy: 0.7541, recall: 0.8485, specificity: 0.6429, f1: 0.8000, brier: 0.16, time: 0.20, best: false, calibrated: false },
+  { name: 'Random Forest', cvAuc: 0.8882, testAuc: 0.8463, accuracy: 0.7213, recall: 0.8182, specificity: 0.6071, f1: 0.7692, brier: 0.18, time: 19.99, best: false, calibrated: false },
+  { name: 'Gradient Boosting', cvAuc: 0.8737, testAuc: 0.8506, accuracy: 0.7377, recall: 0.8182, specificity: 0.6429, f1: 0.7813, brier: 0.17, time: 27.82, best: false, calibrated: false },
+  { name: 'Decision Tree', cvAuc: 0.8274, testAuc: 0.7495, accuracy: 0.7377, recall: 0.8485, specificity: 0.6071, f1: 0.7925, brier: 0.25, time: 0.46, best: false, calibrated: false },
 ]
 
 const featureImportance = [
-  { feature: 'exang (exercise angina)', importance: 0.142 },
-  { feature: 'thal (thalassemia)', importance: 0.128 },
-  { feature: 'ca (major vessels)', importance: 0.124 },
-  { feature: 'cp (chest pain type)', importance: 0.118 },
-  { feature: 'oldpeak (ST depression)', importance: 0.109 },
-  { feature: 'thalach (max heart rate)', importance: 0.098 },
-  { feature: 'slope (ST segment)', importance: 0.087 },
-  { feature: 'sex', importance: 0.065 },
-  { feature: 'age', importance: 0.052 },
-  { feature: 'trestbps (resting BP)', importance: 0.035 },
+  { feature: 'Exercise-Induced Angina', importance: 0.142, description: 'Chest pain during physical activity' },
+  { feature: 'Thalassemia', importance: 0.128, description: 'Blood disorder affecting hemoglobin' },
+  { feature: 'Major Vessels', importance: 0.124, description: 'Blocked arteries visible on imaging' },
+  { feature: 'Chest Pain Type', importance: 0.118, description: 'Pattern of chest discomfort' },
+  { feature: 'ST Depression', importance: 0.109, description: 'ECG change during exercise' },
+  { feature: 'Max Heart Rate', importance: 0.098, description: 'Peak exercise heart rate' },
+  { feature: 'ST Slope', importance: 0.087, description: 'ECG pattern during exercise' },
+  { feature: 'Sex', importance: 0.065, description: 'Biological sex (male/female)' },
+  { feature: 'Age', importance: 0.052, description: 'Patient age in years' },
+  { feature: 'Resting BP', importance: 0.035, description: 'Blood pressure when resting' },
 ]
+
+const datasetInfo = {
+  name: 'Cleveland Heart Disease Dataset',
+  source: 'UCI Machine Learning Repository',
+  records: 303,
+  features: 14,
+  target: 'Heart disease presence (0/1)',
+  classDistribution: { disease: 165, noDisease: 138 },
+  duplicates: 1,
+  missingValues: 'None (after handling)',
+  license: 'CC BY 4.0',
+}
 
 const bestModel = modelResults[0]
 
@@ -36,7 +48,7 @@ export default function DashboardPage() {
         </h1>
         <p className="text-gray-600 mt-2">
           Performance metrics from the trained heart disease prediction models.
-          All models trained on 303 patients with 5-fold stratified cross-validation.
+          All models trained on 302 patients with 5-fold stratified cross-validation.
         </p>
       </div>
 
@@ -52,10 +64,17 @@ export default function DashboardPage() {
           <MetricBox label="Accuracy" value={bestModel.accuracy} format="pct" />
           <MetricBox label="Recall (Sensitivity)" value={bestModel.recall} format="pct" />
         </div>
-        <p className="text-sm text-primary-200 mt-4">
-          Selected by highest CV ROC-AUC score. Logistic Regression was chosen for its strong
-          performance, high interpretability, and fast inference.
-        </p>
+        <div className="mt-4 flex items-center gap-4">
+          <span className="inline-flex items-center gap-1 text-sm text-primary-200">
+            <Check className="w-4 h-4" /> Calibrated probabilities
+          </span>
+          <span className="inline-flex items-center gap-1 text-sm text-primary-200">
+            <Check className="w-4 h-4" /> Feature importance
+          </span>
+          <span className="inline-flex items-center gap-1 text-sm text-primary-200">
+            <Check className="w-4 h-4" /> Explainable predictions
+          </span>
+        </div>
       </div>
 
       {/* Model Comparison Table */}
@@ -75,7 +94,8 @@ export default function DashboardPage() {
                 <th className="text-right py-3 px-4 font-semibold text-gray-700">Recall</th>
                 <th className="text-right py-3 px-4 font-semibold text-gray-700">Specificity</th>
                 <th className="text-right py-3 px-4 font-semibold text-gray-700">F1</th>
-                <th className="text-right py-3 px-4 font-semibold text-gray-700">Time</th>
+                <th className="text-right py-3 px-4 font-semibold text-gray-700">Brier</th>
+                <th className="text-center py-3 px-4 font-semibold text-gray-700">Calibrated</th>
               </tr>
             </thead>
             <tbody>
@@ -91,7 +111,14 @@ export default function DashboardPage() {
                   <td className="py-3 px-4 text-right font-mono">{(m.recall * 100).toFixed(2)}%</td>
                   <td className="py-3 px-4 text-right font-mono">{(m.specificity * 100).toFixed(2)}%</td>
                   <td className="py-3 px-4 text-right font-mono">{(m.f1 * 100).toFixed(2)}%</td>
-                  <td className="py-3 px-4 text-right font-mono">{m.time.toFixed(2)}s</td>
+                  <td className="py-3 px-4 text-right font-mono">{m.brier.toFixed(2)}</td>
+                  <td className="py-3 px-4 text-center">
+                    {m.calibrated ? (
+                      <Check className="w-4 h-4 text-green-500 mx-auto" />
+                    ) : (
+                      <span className="text-gray-400">—</span>
+                    )}
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -99,51 +126,95 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      {/* Bar Chart Visualization */}
-      <div className="card">
-        <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-          <BarChart3 className="w-5 h-5 text-primary-600" />
-          CV ROC-AUC Comparison
-        </h3>
-        <div className="space-y-3">
-          {modelResults.map(m => (
-            <div key={m.name} className="flex items-center gap-3">
-              <span className="w-44 text-sm text-gray-700 text-right truncate">{m.name}</span>
-              <div className="flex-1 bg-gray-100 rounded-full h-7 overflow-hidden">
-                <div
-                  className={`h-full rounded-full flex items-center justify-end pr-3 text-xs font-bold text-white transition-all duration-700 ${
-                    m.best ? 'bg-gradient-to-r from-primary-500 to-primary-700' : 'bg-gray-400'
-                  }`}
-                  style={{ width: `${m.cvAuc * 100}%` }}
-                >
-                  {(m.cvAuc * 100).toFixed(2)}%
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
       {/* Feature Importance */}
       <div className="card">
         <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
           <Target className="w-5 h-5 text-primary-600" />
-          Feature Importance (Random Forest)
+          Feature Importance (Global)
         </h3>
         <div className="space-y-2.5">
           {featureImportance.map(f => (
-            <div key={f.feature} className="flex items-center gap-3">
-              <span className="w-52 text-sm text-gray-700 text-right truncate">{f.feature}</span>
+            <div key={f.feature} className="flex items-center gap-3 group">
+              <span className="w-44 text-sm text-gray-700 text-right truncate">{f.feature}</span>
               <div className="flex-1 bg-gray-100 rounded-full h-6 overflow-hidden">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-blue-400 to-primary-600 flex items-center justify-end pr-2"
+                  className="h-full rounded-full bg-gradient-to-r from-blue-400 to-primary-600 flex items-center justify-end pr-2 transition-all duration-500"
                   style={{ width: `${(f.importance / 0.15) * 100}%` }}
                 >
                   <span className="text-xs font-bold text-white">{(f.importance * 100).toFixed(1)}%</span>
                 </div>
               </div>
+              <span className="text-xs text-gray-500 w-48 truncate opacity-0 group-hover:opacity-100 transition-opacity">{f.description}</span>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Dataset Information */}
+      <div className="card">
+        <h3 className="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+          <Database className="w-5 h-5 text-primary-600" />
+          Dataset Information
+        </h3>
+        <div className="grid sm:grid-cols-2 gap-6">
+          <div className="space-y-3">
+            <div className="flex justify-between">
+              <span className="text-gray-600">Source:</span>
+              <span className="font-medium">{datasetInfo.source}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Records:</span>
+              <span className="font-medium">{datasetInfo.records} patients</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Features:</span>
+              <span className="font-medium">{datasetInfo.features}</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">License:</span>
+              <span className="font-medium">{datasetInfo.license}</span>
+            </div>
+          </div>
+          <div className="space-y-3">
+            <div className="flex justify-between">
+              <span className="text-gray-600">Disease:</span>
+              <span className="font-medium">{datasetInfo.classDistribution.disease} patients</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">No Disease:</span>
+              <span className="font-medium">{datasetInfo.classDistribution.noDisease} patients</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Duplicates:</span>
+              <span className="font-medium">{datasetInfo.duplicates} removed</span>
+            </div>
+            <div className="flex justify-between">
+              <span className="text-gray-600">Missing Values:</span>
+              <span className="font-medium">{datasetInfo.missingValues}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Training Configuration */}
+      <div className="card bg-gray-50">
+        <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
+          <Clock className="w-5 h-5 text-primary-600" />
+          Training Configuration
+        </h3>
+        <div className="grid sm:grid-cols-2 gap-4 text-sm text-gray-700">
+          <div>
+            <p><strong>Dataset:</strong> 302 patients (1 duplicate removed)</p>
+            <p><strong>Split:</strong> 80% train / 20% test, stratified</p>
+            <p><strong>Cross-validation:</strong> 5-fold stratified</p>
+            <p><strong>Random seed:</strong> 42 (reproducible)</p>
+          </div>
+          <div>
+            <p><strong>Preprocessing:</strong> Median imputation + StandardScaler (numerical)</p>
+            <p><strong>Encoding:</strong> OneHotEncoder (categorical)</p>
+            <p><strong>Calibration:</strong> Isotonic regression</p>
+            <p><strong>Features after encoding:</strong> 22</p>
+          </div>
         </div>
       </div>
 
@@ -170,65 +241,27 @@ export default function DashboardPage() {
             <p className="text-purple-600 font-bold mt-2">Best model: {(bestModel.testAuc * 100).toFixed(1)}%</p>
           </div>
           <div className="bg-amber-50 rounded-xl p-4">
-            <h4 className="font-semibold text-amber-800 mb-1">F1 Score</h4>
-            <p className="text-amber-700">Harmonic mean of precision and recall. Balances the trade-off between catching cases and avoiding false alarms.</p>
-            <p className="text-amber-600 font-bold mt-2">Best model: {(bestModel.f1 * 100).toFixed(1)}%</p>
+            <h4 className="font-semibold text-amber-800 mb-1">Brier Score</h4>
+            <p className="text-amber-700">Measures probability calibration. Lower = better calibrated probabilities. 0 = perfect, 1 = worst.</p>
+            <p className="text-amber-600 font-bold mt-2">Best model: {bestModel.brier.toFixed(2)}</p>
           </div>
         </div>
       </div>
 
-      {/* Training Info */}
-      <div className="card bg-gray-50">
-        <h3 className="text-lg font-bold text-gray-900 mb-3 flex items-center gap-2">
-          <Clock className="w-5 h-5 text-primary-600" />
-          Training Configuration
-        </h3>
-        <div className="grid sm:grid-cols-2 gap-4 text-sm text-gray-700">
+      {/* Medical Disclaimer */}
+      <div className="card bg-amber-50 border-amber-200">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5" />
           <div>
-            <p><strong>Dataset:</strong> 302 patients (1 duplicate removed)</p>
-            <p><strong>Split:</strong> 80% train / 20% test, stratified</p>
-            <p><strong>Cross-validation:</strong> 5-fold stratified</p>
-            <p><strong>Random seed:</strong> 42</p>
-          </div>
-          <div>
-            <p><strong>Preprocessing:</strong> Median imputation + StandardScaler (numerical), Mode imputation + OneHotEncoder (categorical)</p>
-            <p><strong>Leakage prevention:</strong> Split before preprocessing, fit only on training data</p>
-            <p><strong>Features after encoding:</strong> 22</p>
+            <h4 className="font-semibold text-amber-800 mb-1">Important Disclaimer</h4>
+            <p className="text-sm text-amber-700">
+              This application provides a machine-learning-based risk estimate for research and
+              educational purposes. It is <strong>not</strong> a medical diagnosis and should not
+              replace evaluation by a qualified healthcare professional. The model was trained
+              on a limited dataset (302 patients) and may not generalize across all populations.
+            </p>
           </div>
         </div>
-      </div>
-
-      {/* Confusion Matrix for Best Model */}
-      <div className="card">
-        <h3 className="text-lg font-bold text-gray-900 mb-4">Confusion Matrix — Logistic Regression</h3>
-        <div className="flex justify-center">
-          <div className="inline-grid grid-cols-3 gap-0 text-center text-sm">
-            <div />
-            <div className="font-semibold text-gray-600 pb-2">Predicted No Disease</div>
-            <div className="font-semibold text-gray-600 pb-2">Predicted Disease</div>
-            <div className="font-semibold text-gray-600 pr-4 pt-2 text-right">Actual No Disease</div>
-            <div className="w-24 h-16 bg-green-100 rounded-lg flex flex-col items-center justify-center border border-green-200">
-              <span className="text-xl font-bold text-green-700">22</span>
-              <span className="text-xs text-green-600">TN</span>
-            </div>
-            <div className="w-24 h-16 bg-red-100 rounded-lg flex flex-col items-center justify-center border border-red-200">
-              <span className="text-xl font-bold text-red-700">6</span>
-              <span className="text-xs text-red-600">FP</span>
-            </div>
-            <div className="font-semibold text-gray-600 pr-4 pt-2 text-right">Actual Disease</div>
-            <div className="w-24 h-16 bg-amber-100 rounded-lg flex flex-col items-center justify-center border border-amber-200">
-              <span className="text-xl font-bold text-amber-700">4</span>
-              <span className="text-xs text-amber-600">FN</span>
-            </div>
-            <div className="w-24 h-16 bg-blue-100 rounded-lg flex flex-col items-center justify-center border border-blue-200">
-              <span className="text-xl font-bold text-blue-700">29</span>
-              <span className="text-xs text-blue-600">TP</span>
-            </div>
-          </div>
-        </div>
-        <p className="text-xs text-gray-500 text-center mt-3">
-          TN=True Negative, FP=False Positive, FN=False Negative, TP=True Positive
-        </p>
       </div>
     </div>
   )

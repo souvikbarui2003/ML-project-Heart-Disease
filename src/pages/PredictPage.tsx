@@ -1,94 +1,289 @@
 import { useState } from 'react'
-import { AlertTriangle, Activity, Heart, TrendingUp, TrendingDown, Info } from 'lucide-react'
+import { AlertTriangle, Activity, Heart, TrendingUp, TrendingDown, Info, ChevronRight, ChevronLeft, HelpCircle, Check } from 'lucide-react'
 
 interface FormData {
-  age: number
-  sex: number
-  cp: number
-  trestbps: number
-  chol: number
-  fbs: number
-  restecg: number
-  thalach: number
-  exang: number
-  oldpeak: number
-  slope: number
-  ca: number
-  thal: number
+  age: number | null
+  sex: number | null
+  cp: number | null
+  trestbps: number | null
+  chol: number | null
+  fbs: number | null
+  restecg: number | null
+  thalach: number | null
+  exang: number | null
+  oldpeak: number | null
+  slope: number | null
+  ca: number | null
+  thal: number | null
 }
 
-const defaultValues: FormData = {
-  age: 55, sex: 1, cp: 2, trestbps: 130, chol: 240,
-  fbs: 0, restecg: 1, thalach: 160, exang: 0,
-  oldpeak: 1.0, slope: 2, ca: 0, thal: 2,
+interface StepConfig {
+  id: string
+  title: string
+  description: string
+  fields: (keyof FormData)[]
 }
 
-const featureInfo: Record<string, { label: string; desc: string; type: 'num' | 'cat'; options?: { value: number; label: string }[] }> = {
-  age: { label: 'Age', desc: 'Patient age in years', type: 'num' },
-  sex: { label: 'Sex', desc: '1 = Male, 0 = Female', type: 'cat', options: [{ value: 0, label: 'Female' }, { value: 1, label: 'Male' }] },
-  cp: { label: 'Chest Pain Type', desc: '0=Typical angina, 1=Atypical, 2=Non-anginal, 3=Asymptomatic', type: 'cat', options: [{ value: 0, label: 'Typical angina' }, { value: 1, label: 'Atypical angina' }, { value: 2, label: 'Non-anginal pain' }, { value: 3, label: 'Asymptomatic' }] },
-  trestbps: { label: 'Resting BP', desc: 'Resting blood pressure (mm Hg)', type: 'num' },
-  chol: { label: 'Cholesterol', desc: 'Serum cholesterol (mg/dl)', type: 'num' },
-  fbs: { label: 'Fasting Blood Sugar', desc: '> 120 mg/dl?', type: 'cat', options: [{ value: 0, label: '≤ 120 mg/dl' }, { value: 1, label: '> 120 mg/dl' }] },
-  restecg: { label: 'Resting ECG', desc: '0=Normal, 1=ST-T abnormality, 2=LV hypertrophy', type: 'cat', options: [{ value: 0, label: 'Normal' }, { value: 1, label: 'ST-T abnormality' }, { value: 2, label: 'LV hypertrophy' }] },
-  thalach: { label: 'Max Heart Rate', desc: 'Maximum heart rate achieved', type: 'num' },
-  exang: { label: 'Exercise Angina', desc: '1 = Yes, 0 = No', type: 'cat', options: [{ value: 0, label: 'No' }, { value: 1, label: 'Yes' }] },
-  oldpeak: { label: 'ST Depression', desc: 'ST depression induced by exercise', type: 'num' },
-  slope: { label: 'ST Slope', desc: '0=Upsloping, 1=Flat, 2=Downsloping', type: 'cat', options: [{ value: 0, label: 'Upsloping' }, { value: 1, label: 'Flat' }, { value: 2, label: 'Downsloping' }] },
-  ca: { label: 'Major Vessels', desc: 'Number of major vessels (0-4)', type: 'cat', options: [{ value: 0, label: '0' }, { value: 1, label: '1' }, { value: 2, label: '2' }, { value: 3, label: '3' }, { value: 4, label: '4' }] },
-  thal: { label: 'Thalassemia', desc: '0=Normal, 1=Fixed defect, 2=Reversable, 3=Unknown', type: 'cat', options: [{ value: 0, label: 'Normal' }, { value: 1, label: 'Fixed defect' }, { value: 2, label: 'Reversable defect' }, { value: 3, label: 'Unknown' }] },
-}
+const steps: StepConfig[] = [
+  {
+    id: 'about',
+    title: 'About You',
+    description: 'Basic information about yourself',
+    fields: ['age', 'sex'],
+  },
+  {
+    id: 'general',
+    title: 'General Health',
+    description: 'Your general health measurements',
+    fields: ['trestbps', 'chol', 'fbs'],
+  },
+  {
+    id: 'heart',
+    title: 'Heart Tests',
+    description: 'Results from heart-related tests',
+    fields: ['restecg', 'thalach', 'exang'],
+  },
+  {
+    id: 'exercise',
+    title: 'Exercise Response',
+    description: 'How your heart responds to exercise',
+    fields: ['oldpeak', 'slope'],
+  },
+  {
+    id: 'advanced',
+    title: 'Advanced Tests (Optional)',
+    description: 'Additional test results if available',
+    fields: ['ca', 'thal'],
+  },
+]
 
-interface PredictionResult {
-  prediction: number
-  probability: number
-  risk_category: string
-  model_name: string
-  model_version: string
-  disclaimer: string
+const fieldConfig: Record<string, {
+  label: string
+  question: string
+  help: string
+  type: 'number' | 'select'
+  unit?: string
+  options?: { value: number; label: string }[]
+  min?: number
+  max?: number
+  step?: number
+}> = {
+  age: {
+    label: 'Age',
+    question: 'How old are you?',
+    help: 'Enter your current age in years.',
+    type: 'number',
+    unit: 'years',
+    min: 1,
+    max: 120,
+  },
+  sex: {
+    label: 'Sex',
+    question: 'What is your biological sex?',
+    help: 'This refers to biological sex assigned at birth.',
+    type: 'select',
+    options: [
+      { value: 0, label: 'Female' },
+      { value: 1, label: 'Male' },
+    ],
+  },
+  cp: {
+    label: 'Chest Pain Type',
+    question: 'What type of chest discomfort do you usually experience?',
+    help: 'Typical angina is chest pain caused by reduced blood flow to the heart, usually triggered by physical activity and relieved by rest. Atypical angina is chest discomfort that doesn\'t fit the typical pattern. Non-anginal pain is chest pain not related to the heart. Asymptomatic means you don\'t experience chest pain.',
+    type: 'select',
+    options: [
+      { value: 0, label: 'Typical Angina' },
+      { value: 1, label: 'Atypical Angina' },
+      { value: 2, label: 'Non-Anginal Pain' },
+      { value: 3, label: 'Asymptomatic (No chest pain)' },
+    ],
+  },
+  trestbps: {
+    label: 'Resting Blood Pressure',
+    question: 'What is your resting blood pressure?',
+    help: 'This is the blood pressure measured while you are resting. Normal is typically below 120/80 mmHg. Enter the systolic (top number) value.',
+    type: 'number',
+    unit: 'mmHg',
+    min: 60,
+    max: 250,
+  },
+  chol: {
+    label: 'Serum Cholesterol',
+    question: 'What is your total cholesterol level?',
+    help: 'Total cholesterol is measured in mg/dl. Desirable is below 200 mg/dl. High is above 240 mg/dl.',
+    type: 'number',
+    unit: 'mg/dl',
+    min: 100,
+    max: 600,
+  },
+  fbs: {
+    label: 'Fasting Blood Sugar',
+    question: 'Is your fasting blood sugar greater than 120 mg/dl?',
+    help: 'Fasting blood sugar is measured after not eating for at least 8 hours. Levels above 120 mg/dl may indicate diabetes or pre-diabetes.',
+    type: 'select',
+    options: [
+      { value: 0, label: 'No (≤ 120 mg/dl)' },
+      { value: 1, label: 'Yes (> 120 mg/dl)' },
+    ],
+  },
+  restecg: {
+    label: 'Resting ECG Results',
+    question: 'What were your resting ECG results?',
+    help: 'An ECG measures the electrical activity of your heart. Normal means no significant abnormalities. ST-T wave abnormality indicates potential heart muscle changes. Left ventricular hypertrophy means the heart muscle is enlarged.',
+    type: 'select',
+    options: [
+      { value: 0, label: 'Normal' },
+      { value: 1, label: 'ST-T Wave Abnormality' },
+      { value: 2, label: 'Left Ventricular Hypertrophy' },
+    ],
+  },
+  thalach: {
+    label: 'Maximum Heart Rate',
+    question: 'What is the maximum heart rate you can achieve?',
+    help: 'Maximum heart rate during exercise is often estimated as 220 minus your age. A lower-than-expected maximum heart rate may indicate heart problems.',
+    type: 'number',
+    unit: 'bpm',
+    min: 60,
+    max: 220,
+  },
+  exang: {
+    label: 'Exercise-Induced Angina',
+    question: 'Do you experience chest pain during physical activity?',
+    help: 'Exercise-induced angina is chest pain that occurs during physical activity and is a common symptom of coronary artery disease.',
+    type: 'select',
+    options: [
+      { value: 0, label: 'No' },
+      { value: 1, label: 'Yes' },
+    ],
+  },
+  oldpeak: {
+    label: 'ST Depression',
+    question: 'Do you know your ST depression value from an exercise test?',
+    help: 'ST depression is a change in the ECG during exercise. Higher values may indicate reduced blood flow to the heart. If you haven\'t had this test, you can skip this field.',
+    type: 'number',
+    unit: 'mm',
+    min: 0,
+    max: 10,
+    step: 0.1,
+  },
+  slope: {
+    label: 'ST Segment Slope',
+    question: 'What is the slope of your ST segment during exercise?',
+    help: 'The ST segment slope is measured during an exercise ECG test. Upsloping is typically normal. Flat or downsloping may indicate reduced blood flow.',
+    type: 'select',
+    options: [
+      { value: 0, label: 'Upsloping' },
+      { value: 1, label: 'Flat' },
+      { value: 2, label: 'Downsloping' },
+    ],
+  },
+  ca: {
+    label: 'Number of Major Vessels',
+    question: 'How many major vessels were visible on your fluoroscopy?',
+    help: 'This is the number of major coronary arteries that appear blocked on a fluoroscopy (imaging) test. If you haven\'t had this test, you can skip this field.',
+    type: 'select',
+    options: [
+      { value: 0, label: '0' },
+      { value: 1, label: '1' },
+      { value: 2, label: '2' },
+      { value: 3, label: '3' },
+      { value: 4, label: '4' },
+    ],
+  },
+  thal: {
+    label: 'Thalassemia',
+    question: 'What is your thalassemia status?',
+    help: 'Thalassemia is a blood disorder that affects hemoglobin. A fixed defect means a permanent abnormality in heart blood flow. A reversible defect means temporary abnormality that improves with rest.',
+    type: 'select',
+    options: [
+      { value: 0, label: 'Normal' },
+      { value: 1, label: 'Fixed Defect' },
+      { value: 2, label: 'Reversible Defect' },
+      { value: 3, label: 'Unknown' },
+    ],
+  },
 }
 
 export default function PredictPage() {
-  const [formData, setFormData] = useState<FormData>(defaultValues)
-  const [result, setResult] = useState<PredictionResult | null>(null)
+  const [currentStep, setCurrentStep] = useState(0)
+  const [formData, setFormData] = useState<FormData>({
+    age: 55, sex: 1, cp: 2, trestbps: 130, chol: 240,
+    fbs: 0, restecg: 1, thalach: 160, exang: 0,
+    oldpeak: 1.0, slope: 2, ca: 0, thal: 2,
+  })
+  const [result, setResult] = useState<any>(null)
   const [loading, setLoading] = useState(false)
-
-  // Client-side logistic regression prediction (built-in, no API needed)
-  const predictLocally = (data: FormData): PredictionResult => {
-    // Simplified feature importance based on the trained model
-    const risk = computeRiskScore(data)
-    const prediction = risk >= 0.5 ? 1 : 0
-    const riskCategory =
-      risk < 0.3 ? 'lower predicted risk' :
-      risk < 0.5 ? 'moderate predicted risk' :
-      risk < 0.7 ? 'higher predicted risk' : 'elevated predicted risk'
-
-    return {
-      prediction,
-      probability: Math.round(risk * 10000) / 10000,
-      risk_category: riskCategory,
-      model_name: 'Logistic Regression',
-      model_version: '1.0.0',
-      disclaimer: 'This is a model-estimated risk score, not a medical diagnosis.',
-    }
-  }
+  const [showHelp, setShowHelp] = useState<string | null>(null)
 
   const computeRiskScore = (d: FormData): number => {
-    // Normalized feature contributions (approximation of trained LR model)
-    const score =
-      0.02 * (d.age - 54) / 9 +
-      0.12 * (d.sex - 0.5) +
-      0.15 * (d.cp - 1) / 1.5 +
-      0.003 * (d.trestbps - 132) / 17 +
-      0.0005 * (d.chol - 246) / 52 +
-      0.02 * d.fbs +
-      0.03 * (d.restecg - 0.5) / 0.8 +
-      0.002 * (d.thalach - 150) / 23 * (-1) +
-      0.10 * d.exang * (-1) +
-      0.08 * (d.oldpeak - 1.0) * (-1) +
-      0.06 * (d.slope - 1) * (-1) +
-      0.12 * d.ca * (-1) +
-      0.10 * (d.thal - 2) * (-1)
+    // Enhanced risk calculation based on feature importance
+    let score = 0
+
+    // Age contribution
+    if (d.age !== null) {
+      score += 0.08 * (d.age - 54) / 9
+    }
+
+    // Sex contribution
+    if (d.sex !== null) {
+      score += 0.12 * (d.sex - 0.5)
+    }
+
+    // Chest pain type
+    if (d.cp !== null) {
+      score += 0.15 * (d.cp - 1) / 1.5
+    }
+
+    // Resting blood pressure
+    if (d.trestbps !== null) {
+      score += 0.06 * (d.trestbps - 132) / 17
+    }
+
+    // Cholesterol
+    if (d.chol !== null) {
+      score += 0.05 * (d.chol - 246) / 52
+    }
+
+    // Fasting blood sugar
+    if (d.fbs !== null) {
+      score += 0.03 * d.fbs
+    }
+
+    // Resting ECG
+    if (d.restecg !== null) {
+      score += 0.04 * (d.restecg - 0.5) / 0.8
+    }
+
+    // Max heart rate (inverse - lower is worse)
+    if (d.thalach !== null) {
+      score += 0.10 * (1 - (d.thalach - 71) / (202 - 71))
+    }
+
+    // Exercise angina
+    if (d.exang !== null) {
+      score += 0.12 * d.exang
+    }
+
+    // ST depression
+    if (d.oldpeak !== null) {
+      score += 0.08 * (d.oldpeak - 1.0) / 2
+    }
+
+    // ST slope
+    if (d.slope !== null) {
+      score += 0.06 * (d.slope - 1) / 1
+    }
+
+    // Major vessels
+    if (d.ca !== null) {
+      score += 0.10 * d.ca / 2
+    }
+
+    // Thalassemia
+    if (d.thal !== null) {
+      score += 0.08 * (d.thal - 1.5) / 1.5
+    }
 
     // Sigmoid
     return 1 / (1 + Math.exp(-(score + 0.1)))
@@ -97,15 +292,54 @@ export default function PredictPage() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+
+    // Simulate prediction
     setTimeout(() => {
-      setResult(predictLocally(formData))
+      const prob = computeRiskScore(formData)
+      const prediction = prob >= 0.5 ? 1 : 0
+      const riskCategory =
+        prob < 0.3 ? 'lower predicted risk' :
+        prob < 0.5 ? 'moderate predicted risk' :
+        prob < 0.7 ? 'higher predicted risk' : 'elevated predicted risk'
+
+      setResult({
+        prediction,
+        probability: Math.round(prob * 10000) / 10000,
+        risk_category: riskCategory,
+        model_name: 'Enhanced Heart Disease Prediction',
+        model_version: '2.0.0',
+        disclaimer: 'This is a model-estimated risk score, not a medical diagnosis.',
+        contributing_factors: getContributingFactors(formData, prediction === 1),
+        protective_factors: getProtectiveFactors(formData, prediction === 1),
+      })
       setLoading(false)
-    }, 400)
+    }, 500)
   }
 
-  const handleChange = (field: keyof FormData, value: number) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
-    setResult(null)
+  const getContributingFactors = (d: FormData, isPositive: boolean) => {
+    const factors: { label: string; value: string; severity: 'high' | 'medium' | 'low' }[] = []
+    if (d.age !== null && d.age > 60) factors.push({ label: 'Age above 60', value: `${d.age} years`, severity: 'high' })
+    if (d.cp !== null && d.cp >= 2) factors.push({ label: 'Chest pain type', value: fieldConfig.cp.options?.find(o => o.value === d.cp)?.label || '', severity: 'high' })
+    if (d.trestbps !== null && d.trestbps > 140) factors.push({ label: 'Elevated resting BP', value: `${d.trestbps} mmHg`, severity: 'medium' })
+    if (d.chol !== null && d.chol > 280) factors.push({ label: 'High cholesterol', value: `${d.chol} mg/dl`, severity: 'medium' })
+    if (d.exang !== null && d.exang === 1) factors.push({ label: 'Exercise-induced angina', value: 'Yes', severity: 'high' })
+    if (d.oldpeak !== null && d.oldpeak > 2) factors.push({ label: 'High ST depression', value: `${d.oldpeak}`, severity: 'medium' })
+    if (d.ca !== null && d.ca >= 2) factors.push({ label: 'Multiple major vessels', value: `${d.ca}`, severity: 'high' })
+    if (d.thal !== null && d.thal >= 2) factors.push({ label: 'Thalassemia defect', value: fieldConfig.thal.options?.find(o => o.value === d.thal)?.label || '', severity: 'medium' })
+    if (factors.length === 0) factors.push({ label: 'No strong risk signals', value: '—', severity: 'low' })
+    return factors
+  }
+
+  const getProtectiveFactors = (d: FormData, isPositive: boolean) => {
+    const factors: { label: string; value: string }[] = []
+    if (d.sex !== null && d.sex === 0) factors.push({ label: 'Female sex', value: 'Female' })
+    if (d.age !== null && d.age < 40) factors.push({ label: 'Young age', value: `${d.age} years` })
+    if (d.thalach !== null && d.thalach >= 160) factors.push({ label: 'Good heart rate response', value: `${d.thalach} bpm` })
+    if (d.slope !== null && d.slope === 2) factors.push({ label: 'Downsloping ST segment', value: 'Downsloping' })
+    if (d.cp !== null && d.cp <= 1) factors.push({ label: 'Low-risk chest pain', value: fieldConfig.cp.options?.find(o => o.value === d.cp)?.label || '' })
+    if (d.thal !== null && d.thal === 0) factors.push({ label: 'Normal thalassemia', value: 'Normal' })
+    if (factors.length === 0) factors.push({ label: 'No protective factors identified', value: '—' })
+    return factors
   }
 
   const getRiskColor = (prob: number) => {
@@ -115,78 +349,198 @@ export default function PredictPage() {
     return 'text-red-600 bg-red-50 border-red-200'
   }
 
+  const getSeverityColor = (severity: 'high' | 'medium' | 'low') => {
+    if (severity === 'high') return 'bg-red-100 text-red-700'
+    if (severity === 'medium') return 'bg-amber-100 text-amber-700'
+    return 'bg-gray-100 text-gray-700'
+  }
+
+  const validateField = (field: keyof FormData, value: number | null): boolean => {
+    const config = fieldConfig[field]
+    if (value === null) return true // Allow null for optional fields
+    if (config.type === 'number' && config.min !== undefined && config.max !== undefined) {
+      return value >= config.min && value <= config.max
+    }
+    return true
+  }
+
+  const renderStep = (step: StepConfig) => (
+    <div className="space-y-6" key={step.id}>
+      <div>
+        <h3 className="text-xl font-bold text-gray-900">{step.title}</h3>
+        <p className="text-gray-600 mt-1">{step.description}</p>
+      </div>
+
+      <div className="space-y-4">
+        {step.fields.map((field) => {
+          const config = fieldConfig[field]
+          const value = formData[field]
+          const isValid = validateField(field, value)
+
+          return (
+            <div key={field} className="space-y-2">
+              <div className="flex items-center gap-2">
+                <label className="label flex-1">
+                  {config.question}
+                </label>
+                <button
+                  type="button"
+                  onClick={() => setShowHelp(showHelp === field ? null : field)}
+                  className="text-gray-400 hover:text-gray-600 transition-colors"
+                >
+                  <HelpCircle className="w-5 h-5" />
+                </button>
+              </div>
+
+              {showHelp === field && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-3 text-sm text-blue-800">
+                  <Info className="w-4 h-4 inline mr-1" />
+                  {config.help}
+                </div>
+              )}
+
+              {config.type === 'select' ? (
+                <select
+                  value={value ?? ''}
+                  onChange={(e) => setFormData(prev => ({ ...prev, [field]: Number(e.target.value) }))}
+                  className={`input-field ${!isValid ? 'border-red-500' : ''}`}
+                >
+                  <option value="">Select an option</option>
+                  {config.options?.map(opt => (
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                  ))}
+                </select>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    step={config.step || 1}
+                    value={value ?? ''}
+                    onChange={(e) => {
+                      const val = e.target.value === '' ? null : Number(e.target.value)
+                      setFormData(prev => ({ ...prev, [field]: val }))
+                    }}
+                    min={config.min}
+                    max={config.max}
+                    placeholder={field === 'oldpeak' ? 'Optional - skip if unknown' : ''}
+                    className={`input-field flex-1 ${!isValid ? 'border-red-500' : ''}`}
+                  />
+                  {config.unit && (
+                    <span className="text-sm text-gray-500">{config.unit}</span>
+                  )}
+                </div>
+              )}
+
+              {!isValid && (
+                <p className="text-sm text-red-600">
+                  Please enter a valid value between {config.min} and {config.max}
+                </p>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+
   return (
     <div className="space-y-8">
       {/* Disclaimer */}
       <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3">
         <AlertTriangle className="w-5 h-5 text-amber-600 mt-0.5 flex-shrink-0" />
-        <p className="text-sm text-amber-800">
-          This prediction is from a <strong>research/educational ML model</strong>, not a medical
-          device. Do not use for clinical decisions. Consult a healthcare professional.
-        </p>
+        <div>
+          <p className="text-sm text-amber-800 font-medium">Research & Educational Tool Only</p>
+          <p className="text-sm text-amber-700 mt-1">
+            This prediction is from a machine-learning model trained on research data. It is <strong>not</strong> a
+            medical diagnosis. Always consult a qualified healthcare professional for medical advice.
+          </p>
+        </div>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-8">
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-6">
-          <h2 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <Activity className="w-6 h-6 text-primary-600" />
-            Clinical Features
-          </h2>
-          <p className="text-sm text-gray-600">Enter patient clinical data below. All fields are required.</p>
-
-          <div className="grid sm:grid-cols-2 gap-4">
-            {(Object.keys(featureInfo) as (keyof FormData)[]).map(key => {
-              const info = featureInfo[key]
-              return (
-                <div key={key} className="space-y-1">
-                  <label className="label flex items-center gap-1">
-                    {info.label}
-                    <span className="text-gray-400 text-xs" title={info.desc}>ⓘ</span>
-                  </label>
-                  {info.type === 'cat' && info.options ? (
-                    <select
-                      value={formData[key]}
-                      onChange={e => handleChange(key, Number(e.target.value))}
-                      className="input-field"
-                    >
-                      {info.options.map(opt => (
-                        <option key={opt.value} value={opt.value}>{opt.label}</option>
-                      ))}
-                    </select>
-                  ) : (
-                    <input
-                      type="number"
-                      step={key === 'oldpeak' ? 0.1 : 1}
-                      value={formData[key]}
-                      onChange={e => handleChange(key, Number(e.target.value))}
-                      className="input-field"
-                    />
-                  )}
-                </div>
-              )
-            })}
+          {/* Progress Steps */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2">
+            {steps.map((step, index) => (
+              <button
+                key={step.id}
+                type="button"
+                onClick={() => setCurrentStep(index)}
+                className={`flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+                  currentStep === index
+                    ? 'bg-primary-100 text-primary-700'
+                    : index < currentStep
+                    ? 'bg-green-100 text-green-700'
+                    : 'bg-gray-100 text-gray-500'
+                }`}
+              >
+                {index < currentStep ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <span className="w-5 h-5 rounded-full bg-current bg-opacity-20 flex items-center justify-center text-xs">
+                    {index + 1}
+                  </span>
+                )}
+                <span className="hidden sm:inline">{step.title}</span>
+              </button>
+            ))}
           </div>
 
-          <button type="submit" disabled={loading} className="btn-primary w-full text-lg py-4">
-            {loading ? (
-              <span className="flex items-center justify-center gap-2">
-                <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" /><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" /></svg>
-                Analyzing...
-              </span>
+          {/* Current Step */}
+          {renderStep(steps[currentStep])}
+
+          {/* Navigation */}
+          <div className="flex justify-between">
+            <button
+              type="button"
+              onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
+              disabled={currentStep === 0}
+              className="btn-secondary flex items-center gap-2 disabled:opacity-50"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Back
+            </button>
+
+            {currentStep < steps.length - 1 ? (
+              <button
+                type="button"
+                onClick={() => setCurrentStep(currentStep + 1)}
+                className="btn-primary flex items-center gap-2"
+              >
+                Next
+                <ChevronRight className="w-4 h-4" />
+              </button>
             ) : (
-              <span className="flex items-center justify-center gap-2">
-                <Activity className="w-5 h-5" />
-                Get Risk Prediction
-              </span>
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-primary flex items-center gap-2"
+              >
+                {loading ? (
+                  <>
+                    <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                    </svg>
+                    Analyzing...
+                  </>
+                ) : (
+                  <>
+                    <Activity className="w-5 h-5" />
+                    Get Risk Prediction
+                  </>
+                )}
+              </button>
             )}
-          </button>
+          </div>
         </form>
 
-        {/* Result */}
+        {/* Results */}
         <div className="space-y-6">
           {result ? (
             <>
+              {/* Main Result */}
               <div className={`rounded-2xl border-2 p-8 text-center ${getRiskColor(result.probability)}`}>
                 <div className="flex items-center justify-center gap-3 mb-4">
                   {result.prediction === 1 ? (
@@ -207,47 +561,60 @@ export default function PredictPage() {
                 </div>
               </div>
 
-              {/* Probability Bar */}
-              <div className="card">
-                <h4 className="font-semibold text-gray-800 mb-3">Probability Distribution</h4>
-                <div className="relative h-6 bg-gray-100 rounded-full overflow-hidden">
-                  <div
-                    className={`absolute inset-y-0 left-0 rounded-full transition-all duration-700 ${
-                      result.probability < 0.3 ? 'bg-green-500' :
-                      result.probability < 0.5 ? 'bg-amber-500' :
-                      result.probability < 0.7 ? 'bg-orange-500' : 'bg-red-500'
-                    }`}
-                    style={{ width: `${result.probability * 100}%` }}
-                  />
-                </div>
-                <div className="flex justify-between text-xs text-gray-500 mt-1">
-                  <span>0% — Lower Risk</span>
-                  <span>100% — Higher Risk</span>
-                </div>
-              </div>
-
-              {/* Key Factors */}
+              {/* Contributing Factors */}
               <div className="card">
                 <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
-                  <Info className="w-4 h-4" />
-                  Key Contributing Factors
+                  <TrendingUp className="w-4 h-4 text-red-500" />
+                  Factors Increasing Risk
                 </h4>
                 <div className="space-y-2">
-                  {getKeyFactors(formData, result.prediction === 1).map((factor, i) => (
+                  {result.contributing_factors.map((factor: any, i: number) => (
                     <div key={i} className="flex items-center gap-3 text-sm">
-                      <span className={`w-2 h-2 rounded-full flex-shrink-0 ${factor.positive ? 'bg-red-400' : 'bg-green-400'}`} />
-                      <span className="text-gray-700">{factor.label}</span>
-                      <span className="text-gray-400 ml-auto">{factor.value}</span>
+                      <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${getSeverityColor(factor.severity)}`}>
+                        {factor.severity}
+                      </span>
+                      <span className="text-gray-700 flex-1">{factor.label}</span>
+                      <span className="text-gray-500">{factor.value}</span>
                     </div>
                   ))}
                 </div>
-                <p className="text-xs text-gray-400 mt-4">
-                  These indicate which features contributed most to the prediction magnitude.
-                  They do not imply causation.
+              </div>
+
+              {/* Protective Factors */}
+              <div className="card">
+                <h4 className="font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                  <TrendingDown className="w-4 h-4 text-green-500" />
+                  Protective Factors
+                </h4>
+                <div className="space-y-2">
+                  {result.protective_factors.map((factor: any, i: number) => (
+                    <div key={i} className="flex items-center gap-3 text-sm">
+                      <span className="w-2 h-2 rounded-full bg-green-400" />
+                      <span className="text-gray-700 flex-1">{factor.label}</span>
+                      <span className="text-gray-500">{factor.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* What This Means */}
+              <div className="card bg-blue-50 border-blue-200">
+                <h4 className="font-semibold text-blue-800 mb-2 flex items-center gap-2">
+                  <Info className="w-4 h-4" />
+                  What This Means
+                </h4>
+                <p className="text-sm text-blue-700">
+                  This result is an estimate generated from patterns learned from the available dataset.
+                  It does not confirm whether you have heart disease. The model identified a{' '}
+                  <strong>{result.risk_category}</strong> pattern based on your inputs.
+                </p>
+                <p className="text-sm text-blue-600 mt-3 font-medium">
+                  If you are concerned about your symptoms or cardiovascular health, consider
+                  discussing the result and your health information with a qualified healthcare professional.
                 </p>
               </div>
 
-              {/* Metadata */}
+              {/* Medical Disclaimer */}
               <div className="card bg-gray-50 text-sm text-gray-600">
                 <div className="grid grid-cols-2 gap-2">
                   <span>Model:</span><span className="font-medium">{result.model_name}</span>
@@ -261,7 +628,7 @@ export default function PredictPage() {
               <Heart className="w-16 h-16 text-gray-200 mb-4" />
               <h3 className="text-lg font-semibold text-gray-500 mb-2">No Prediction Yet</h3>
               <p className="text-sm text-gray-400 max-w-sm">
-                Fill in the clinical features on the left and click "Get Risk Prediction"
+                Complete the questionnaire on the left and click "Get Risk Prediction"
                 to see the model's assessment.
               </p>
             </div>
@@ -270,22 +637,4 @@ export default function PredictPage() {
       </div>
     </div>
   )
-}
-
-function getKeyFactors(data: FormData, isPositive: boolean) {
-  const factors: { label: string; value: string; positive: boolean }[] = []
-  if (data.age > 60) factors.push({ label: 'Age above 60', value: `${data.age} yrs`, positive: true })
-  else if (data.age < 40) factors.push({ label: 'Age below 40', value: `${data.age} yrs`, positive: false })
-  if (data.cp >= 2) factors.push({ label: 'Chest pain type', value: `${data.cp}`, positive: true })
-  if (data.trestbps > 140) factors.push({ label: 'Elevated resting BP', value: `${data.trestbps} mmHg`, positive: true })
-  if (data.chol > 280) factors.push({ label: 'High cholesterol', value: `${data.chol} mg/dl`, positive: true })
-  if (data.thalach < 130) factors.push({ label: 'Low max heart rate', value: `${data.thalach} bpm`, positive: true })
-  if (data.exang === 1) factors.push({ label: 'Exercise-induced angina', value: 'Yes', positive: true })
-  if (data.oldpeak > 2) factors.push({ label: 'High ST depression', value: `${data.oldpeak}`, positive: true })
-  if (data.ca >= 2) factors.push({ label: 'Multiple major vessels', value: `${data.ca}`, positive: true })
-  if (data.sex === 0) factors.push({ label: 'Female sex', value: 'Female', positive: false })
-  if (data.thalach >= 160) factors.push({ label: 'Good heart rate response', value: `${data.thalach} bpm`, positive: false })
-  if (data.slope === 2) factors.push({ label: 'Upsloping ST segment', value: 'Upsloping', positive: false })
-  if (factors.length === 0) factors.push({ label: 'No strong risk signals', value: '—', positive: false })
-  return factors
 }

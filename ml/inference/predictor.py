@@ -1,163 +1,134 @@
 """
-Model inference and prediction serving.
+Enhanced prediction module with calibrated probabilities and explanations.
 """
-import json
-from datetime import datetime
-from pathlib import Path
-from typing import Any, Dict, Optional
-
 import numpy as np
-import joblib
-
-from src.config import MODEL_DIR, MODEL_VERSION, RISK_THRESHOLDS, TARGET_COLUMN
-from src.utils.logging import logger
+from typing import Any, Dict, List, Optional
+from ml.utils.logging import logger
 
 
-def load_model(
-    model_path: Optional[Path] = None,
-) -> Dict[str, Any]:
-    """
-    Load a persisted model and its metadata.
+class HeartDiseasePredictor:
+    """Enhanced predictor with calibration and explainability."""
 
-    Args:
-        model_path: Path to the model file. If None, loads the latest model.
+    def __init__(self):
+        self.model = None
+        self.calibrated_model = None
+        self.model_name = None
+        self.model_version = "2.0.0"
+        self.feature_names = None
+        self.metrics = {}
+        self.feature_importance = {}
 
-    Returns:
-        Dictionary containing model, preprocessor, and metadata.
+    def load_model(self, model_path: str = None):
+        """Load trained model from disk."""
+        import joblib
+        from pathlib import Path
+        from ml.config import MODEL_DIR
 
-    Raises:
-        FileNotFoundError: If no model is found.
-    """
-    if model_path is None:
-        model_path = MODEL_DIR / "best_model.joblib"
-        metadata_path = MODEL_DIR / "model_metadata.json"
-    else:
-        metadata_path = model_path.parent / "model_metadata.json"
+        if model_path is None:
+            # Find most recent model
+            model_files = list(MODEL_DIR.glob("*.joblib"))
+            if not model_files:
+                raise FileNotFoundError("No model found in models directory")
+            model_path = max(model_files, key=lambda f: f.stat().st_mtime)
 
-    if not model_path.exists():
-        raise FileNotFoundError(
-            f"No model found at {model_path}. "
-            f"Please train a model first: python -m src.train"
+        logger.info(f"Loading model from {model_path}")
+        model_data = joblib.load(model_path)
+
+        self.model = model_data["model"]
+        self.model_name = model_data.get("model_name", "Unknown")
+        self.feature_names = model_data.get("feature_names", [])
+        self.metrics = model_data.get("metrics", {})
+        self.feature_importance = model_data.get("feature_importance", {})
+
+        logger.info(f"Loaded model: {self.model_name}")
+
+    def predict(self, features: np.ndarray) -> Dict[str, Any]:
+        """
+        Make prediction with enhanced output.
+        """
+        if self.model is None:
+            raise ValueError("Model not loaded. Call load_model() first.")
+
+        # Use calibrated model if available, otherwise use raw model
+        model = self.calibrated_model if self.calibrated_model else self.model
+
+        # Get predictions
+        prediction = model.predict(features)
+        probabilities = model.predict_proba(features)
+
+        return {
+            "prediction": prediction,
+            "probability": probabilities[:, 1],
+            "all_probabilities": probabilities,
+        }
+
+    def explain_prediction(
+        self,
+        features: np.ndarray,
+        feature_values: Dict[str, float],
+    ) -> Dict[str, Any]:
+        """
+        Explain a single prediction.
+        """
+        from ml.inference.explainer import explain_prediction, get_feature_importance
+
+        explanation = explain_prediction(
+            self.model,
+            features[0] if features.ndim > 1 else features,
+            self.feature_names,
+            feature_values,
         )
 
-    logger.info(f"Loading model from {model_path}")
+        # Add model info
+        explanation["model_name"] = self.model_name
+        explanation["model_version"] = self.model_version
+        explanation["feature_importance"] = self.feature_importance
 
-    artifact = joblib.load(model_path)
+        return explanation
 
-    # Load metadata
-    metadata = {}
-    if metadata_path.exists():
-        with open(metadata_path, "r") as f:
-            metadata = json.load(f)
+    def get_prediction_response(
+        self,
+        features: np.ndarray,
+        feature_values: Dict[str, float],
+        include_explanation: bool = True,
+    ) -> Dict[str, Any]:
+        """
+        Generate comprehensive prediction response.
+        """
+        # Make prediction
+        result = self.predict(features)
 
-    artifact["metadata"] = metadata
-    logger.info(
-        f"Model loaded: {metadata.get('model_name', 'unknown')} "
-        f"v{metadata.get('model_version', 'unknown')}"
-    )
+        prob = float(result["probability"][0])
+        prediction = int(result["prediction"][0])
 
-    return artifact
+        # Determine risk category
+        if prob < 0.3:
+            risk_category = "lower predicted risk"
+            risk_color = "green"
+        elif prob < 0.5:
+            risk_category = "moderate predicted risk"
+            risk_color = "amber"
+        elif prob < 0.7:
+            risk_category = "higher predicted risk"
+            risk_color = "orange"
+        else:
+            risk_category = "elevated predicted risk"
+            risk_color = "red"
 
-
-def predict(
-    features: np.ndarray,
-    model_path: Optional[Path] = None,
-) -> Dict[str, Any]:
-    """
-    Make a prediction with the loaded model.
-
-    Args:
-        features: Preprocessed feature array.
-        model_path: Optional path to a specific model file.
-
-    Returns:
-        Dictionary with prediction, probability, and risk category.
-    """
-    artifact = load_model(model_path)
-    model = artifact["model"]
-    metadata = artifact.get("metadata", {})
-
-    # Make prediction
-    prediction = int(model.predict(features.reshape(1, -1))[0])
-    probability = float(model.predict_proba(features.reshape(1, -1))[0][1])
-
-    # Determine risk category
-    risk_category = _get_risk_category(probability)
-
-    result = {
-        "prediction": prediction,
-        "probability": round(probability, 4),
-        "risk_category": risk_category,
-        "model_version": metadata.get("model_version", MODEL_VERSION),
-        "model_name": metadata.get("model_name", "unknown"),
-        "timestamp": datetime.now().isoformat(),
-        "disclaimer": (
-            "This is a model-estimated risk score, not a medical diagnosis. "
-            "Consult a qualified healthcare professional for medical evaluation."
-        ),
-    }
-
-    logger.info(
-        f"Prediction: {prediction}, Probability: {probability:.4f}, "
-        f"Risk: {risk_category}"
-    )
-
-    return result
-
-
-def predict_batch(
-    features_batch: np.ndarray,
-    model_path: Optional[Path] = None,
-) -> list:
-    """
-    Make predictions for a batch of samples.
-
-    Args:
-        features_batch: Preprocessed feature array of shape (n_samples, n_features).
-        model_path: Optional path to a specific model file.
-
-    Returns:
-        List of prediction dictionaries.
-    """
-    artifact = load_model(model_path)
-    model = artifact["model"]
-    metadata = artifact.get("metadata", {})
-
-    predictions = model.predict(features_batch)
-    probabilities = model.predict_proba(features_batch)[:, 1]
-
-    results = []
-    for i in range(len(predictions)):
-        result = {
-            "prediction": int(predictions[i]),
-            "probability": round(float(probabilities[i]), 4),
-            "risk_category": _get_risk_category(float(probabilities[i])),
-            "model_version": metadata.get("model_version", MODEL_VERSION),
-            "model_name": metadata.get("model_name", "unknown"),
+        response = {
+            "prediction": prediction,
+            "probability": prob,
+            "risk_category": risk_category,
+            "risk_color": risk_color,
+            "model_name": self.model_name,
+            "model_version": self.model_version,
+            "confidence": float(max(prob, 1 - prob)),
+            "disclaimer": "This is a model-estimated risk score, not a medical diagnosis.",
         }
-        results.append(result)
 
-    return results
+        # Add explanation if requested
+        if include_explanation:
+            explanation = self.explain_prediction(features, feature_values)
+            response["explanation"] = explanation
 
-
-def _get_risk_category(probability: float) -> str:
-    """
-    Convert a probability to a risk category.
-
-    NOTE: These thresholds are NOT clinically validated. They are
-    model-estimated risk levels for research/educational purposes only.
-
-    Args:
-        probability: Predicted probability.
-
-    Returns:
-        Risk category string.
-    """
-    if probability < RISK_THRESHOLDS["low"]:
-        return "lower predicted risk"
-    elif probability < RISK_THRESHOLDS["moderate"]:
-        return "moderate predicted risk"
-    elif probability < RISK_THRESHOLDS["high"]:
-        return "higher predicted risk"
-    else:
-        return "elevated predicted risk"
+        return response

@@ -1,0 +1,201 @@
+# Heart Disease Prediction - Master Clinical Feature Schema
+# Canonical feature definitions used across all datasets and models
+
+features:
+  - name: "age"
+    display_name: "Age"
+    description: "Your age in years"
+    data_type: "integer"
+    unit: "years"
+    allowed_range: [1, 120]
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: false
+    user_friendly_question: "How old are you?"
+    help_text: "Enter your current age in years."
+
+  - name: "sex"
+    display_name: "Sex"
+    description: "Biological sex"
+    data_type: "categorical"
+    allowed_values: [0, 1]
+    value_labels:
+      0: "Female"
+      1: "Male"
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: false
+    user_friendly_question: "What is your biological sex?"
+    help_text: "This refers to biological sex assigned at birth."
+
+  - name: "cp"
+    display_name: "Chest Pain Type"
+    description: "Type of chest pain experienced"
+    data_type: "categorical"
+    allowed_values: [0, 1, 2, 3]
+    value_labels:
+      0: "Typical Angina"
+      1: "Atypical Angina"
+      2: "Non-Anginal Pain"
+      3: "Asymptomatic"
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: false
+    user_friendly_question: "What type of chest discomfort do you usually experience?"
+    help_text: >
+      Typical angina is chest pain caused by reduced blood flow to the heart,
+      usually triggered by physical activity and relieved by rest.
+      Atypical angina is chest discomfort that doesn't fit the typical pattern.
+      Non-anginal pain is chest pain not related to the heart.
+      Asymptomatic means you don't experience chest pain.
+
+  - name: "trestbps"
+    display_name: "Resting Blood Pressure"
+    description: "Blood pressure when resting"
+    data_type: "numeric"
+    unit: "mmHg"
+    allowed_range: [60, 250]
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: false
+    user_friendly_question: "What is your resting blood pressure?"
+    help_text: >
+      This is the blood pressure measured while you are resting.
+      Normal is typically below 120/80 mmHg.
+      Enter the systolic (top number) value.
+
+  - name: "chol"
+    display_name: "Serum Cholesterol"
+    description: "Total cholesterol level in blood"
+    data_type: "numeric"
+    unit: "mg/dl"
+    allowed_range: [100, 600]
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: false
+    user_friendly_question: "What is your total cholesterol level?"
+    help_text: >
+      Total cholesterol is measured in mg/dl.
+      Desirable is below 200 mg/dl.
+      High is above 240 mg/dl.
+
+  - name: "fbs"
+    display_name: "Fasting Blood Sugar"
+    description: "Fasting blood sugar level"
+    data_type: "categorical"
+    allowed_values: [0, 1]
+    value_labels:
+      0: "≤ 120 mg/dl"
+      1: "> 120 mg/dl"
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: false
+    user_friendly_question: "Is your fasting blood sugar greater than 120 mg/dl?"
+    help_text: >
+      Fasting blood sugar is measured after not eating for at least 8 hours.
+      Levels above 120 mg/dl may indicate diabetes or pre-diabetes.
+
+  - name: "restecg"
+    display_name: "Resting ECG Results"
+    description: "Results of resting electrocardiogram"
+    data_type: "categorical"
+    allowed_values: [0, 1, 2]
+    value_labels:
+      0: "Normal"
+      1: "ST-T Wave Abnormality"
+      2: "Left Ventricular Hypertrophy"
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: false
+    user_friendly_question: "What were your resting ECG results?"
+    help_text: >
+      An ECG measures the electrical activity of your heart.
+      Normal means no significant abnormalities.
+      ST-T wave abnormality indicates potential heart muscle changes.
+      Left ventricular hypertrophy means the heart muscle is enlarged.
+
+  - name: "thalach"
+    display_name: "Maximum Heart Rate"
+    description: "Maximum heart rate achieved during exercise"
+    data_type: "numeric"
+    unit: "bpm"
+    allowed_range: [60, 220]
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: false
+    user_friendly_question: "What is the maximum heart rate you can achieve?"
+    help_text: >
+      Maximum heart rate during exercise is often estimated as 220 minus your age.
+      A lower-than-expected maximum heart rate may indicate heart problems.
+
+  - name: "exang"
+    display_name: "Exercise-Induced Angina"
+    description: "Chest pain caused by exercise"
+    data_type: "categorical"
+    allowed_values: [0, 1]
+    value_labels:
+      0: "No"
+      1: "Yes"
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: false
+    user_friendly_question: "Do you experience chest pain during physical activity?"
+    help_text: >
+      Exercise-induced angina is chest pain that occurs during physical activity
+      and is a common symptom of coronary artery disease.
+
+  - name: "oldpeak"
+    display_name: "ST Depression"
+    description: "ST depression induced by exercise"
+    data_type: "numeric"
+    unit: "mm"
+    allowed_range: [0, 10]
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: false
+    user_friendly_question: "Do you know your ST depression value from an exercise test?"
+    help_text: >
+      ST depression is a change in the ECG during exercise.
+      Higher values may indicate reduced blood flow to the heart.
+      If you haven't had this test, you can skip this field.
+
+  - name: "slope"
+    display_name: "ST Segment Slope"
+    description: "Slope of peak exercise ST segment"
+    data_type: "categorical"
+    allowed_values: [0, 1, 2]
+    value_labels:
+      0: "Upsloping"
+      1: "Flat"
+      2: "Downsloping"
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: false
+    user_friendly_question: "What is the slope of your ST segment during exercise?"
+    help_text: >
+      The ST segment slope is measured during an exercise ECG test.
+      Upsloping is typically normal.
+      Flat or downsloping may indicate reduced blood flow.
+
+  - name: "ca"
+    display_name: "Number of Major Vessels"
+    description: "Number of major vessels colored by fluoroscopy"
+    data_type: "categorical"
+    allowed_values: [0, 1, 2, 3, 4]
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: true
+    user_friendly_question: "How many major vessels were visible on your fluoroscopy?"
+    help_text: >
+      This is the number of major coronary arteries that appear blocked
+      on a fluoroscopy (imaging) test. If you haven't had this test,
+      you can skip this field.
+
+  - name: "thal"
+    display_name: "Thalassemia"
+    description: "Thalassemia type"
+    data_type: "categorical"
+    allowed_values: [0, 1, 2, 3]
+    value_labels:
+      0: "Normal"
+      1: "Fixed Defect"
+      2: "Reversible Defect"
+      3: "Unknown"
+    source_datasets: ["Cleveland", "Hungarian", "Swiss", "Long Beach VA"]
+    missing_allowed: true
+    user_friendly_question: "What is your thalassemia status?"
+    help_text: >
+      Thalassemia is a blood disorder that affects hemoglobin.
+      A fixed defect means a permanent abnormality in heart blood flow.
+      A reversible defect means temporary abnormality that improves with rest.
+
+schema_version: "1.0.0"
+last_updated: "2024-01-01"
