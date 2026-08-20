@@ -1,0 +1,71 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "heart-disease-prediction"
+version = "1.0.0"
+description = "Heart Disease Risk Prediction using Machine Learning"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.9"
+authors = [
+    {name = "Heart Disease ML Team"},
+]
+keywords = ["machine-learning", "heart-disease", "healthcare", "prediction"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Healthcare Industry",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+
+[project.scripts]
+heart-train = "src.train:main"
+heart-evaluate = "src.evaluate:main"
+heart-predict = "src.predict:main"
+
+[tool.setuptools.packages.find]
+include = ["src*", "api*"]
+
+[tool.ruff]
+target-version = "py39"
+line-length = 88
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "A", "SIM", "TCH"]
+ignore = ["E501"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["src", "api"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+markers = [
+    "slow: marks tests as slow (deselect with '-m \"not slow\"')",
+    "integration: marks integration tests",
+]
+
+[tool.mypy]
+python_version = "3.9"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+
+[tool.coverage.run]
+source = ["src", "api"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 50

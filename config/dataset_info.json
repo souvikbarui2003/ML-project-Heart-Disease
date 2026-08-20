@@ -1,0 +1,36 @@
+{
+  "dataset_name": "Heart Disease (UCI)",
+  "source": "UCI Machine Learning Repository / Kaggle",
+  "description": "Cleveland Heart Disease dataset for binary classification",
+  "n_samples": 303,
+  "n_features": 13,
+  "target_column": "target",
+  "target_description": "Heart disease presence (1 = disease, 0 = no disease)",
+  "features": {
+    "age": {"type": "numerical", "description": "Age in years", "range": [29, 77]},
+    "sex": {"type": "categorical", "description": "Sex (1 = male, 0 = female)", "values": [0, 1]},
+    "cp": {"type": "categorical", "description": "Chest pain type (0-3)", "values": [0, 1, 2, 3]},
+    "trestbps": {"type": "numerical", "description": "Resting blood pressure (mm Hg)", "range": [94, 200]},
+    "chol": {"type": "numerical", "description": "Serum cholesterol (mg/dl)", "range": [126, 564]},
+    "fbs": {"type": "categorical", "description": "Fasting blood sugar > 120 mg/dl", "values": [0, 1]},
+    "restecg": {"type": "categorical", "description": "Resting ECG results (0-2)", "values": [0, 1, 2]},
+    "thalach": {"type": "numerical", "description": "Maximum heart rate achieved", "range": [71, 202]},
+    "exang": {"type": "categorical", "description": "Exercise induced angina", "values": [0, 1]},
+    "oldpeak": {"type": "numerical", "description": "ST depression induced by exercise", "range": [0.0, 6.2]},
+    "slope": {"type": "categorical", "description": "Slope of peak exercise ST segment", "values": [0, 1, 2]},
+    "ca": {"type": "categorical", "description": "Number of major vessels (0-4)", "values": [0, 1, 2, 3, 4]},
+    "thal": {"type": "categorical", "description": "Thalassemia (0-3)", "values": [0, 1, 2, 3]}
+  },
+  "class_distribution": {
+    "0": 138,
+    "1": 165
+  },
+  "missing_values": "None",
+  "duplicates": 1,
+  "limitations": [
+    "Small sample size (303 patients)",
+    "Limited to Cleveland clinic data",
+    "No demographic diversity information",
+    "Features may not generalize across populations"
+  ]
+}
