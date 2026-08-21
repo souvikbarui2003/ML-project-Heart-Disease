@@ -116,7 +116,7 @@ export default function PrivacyPage({ onNavigate }: Props) {
           <div className="bg-gray-50 rounded-xl p-4 mt-2">
             <p className="font-semibold text-gray-800">Souvik Barui</p>
             <p className="text-sm text-gray-600">Research & Development</p>
-            <p className="text-sm text-gray-600 mt-1">Email: <a href="mailto:projectmakersb@gmail.com" className="text-primary-600 hover:underline">projectmakersb@gmail.com</a></p>
+            <p className="text-sm text-gray-600 mt-1">Email: <a href="mailto:projectmakersb@gmail.com?subject=HeartGuard%20ML%20%E2%80%94%20Privacy%20Policy%20Inquiry" className="text-primary-600 hover:underline">projectmakersb@gmail.com</a></p>
             <p className="text-sm text-gray-600 mt-1">GitHub: <a href="https://github.com/souvikbarui2003" target="_blank" rel="noopener noreferrer" className="text-primary-600 hover:underline">github.com/souvikbarui2003</a></p>
           </div>
         </Section>

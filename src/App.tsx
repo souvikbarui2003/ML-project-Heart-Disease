@@ -135,7 +135,7 @@ export default function App() {
                 <a href="https://github.com/souvikbarui2003" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[10px] text-primary-600 hover:underline mt-1">
                   <Github className="w-3 h-3" />GitHub Profile
                 </a>
-                <a href="mailto:projectmakersb@gmail.com" className="inline-flex items-center gap-1 text-[10px] text-primary-600 hover:underline mt-1">
+                <a href="mailto:projectmakersb@gmail.com?subject=HeartGuard%20ML%20%E2%80%94%20Project%20Inquiry" className="inline-flex items-center gap-1 text-[10px] text-primary-600 hover:underline mt-1">
                   ✉️ Email Developer
                 </a>
                 </div>
@@ -211,7 +211,7 @@ export default function App() {
                 <a href="https://github.com/souvikbarui2003" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-primary-600 hover:underline mt-1">
                   <Github className="w-3 h-3" />github.com/souvikbarui2003
                 </a>
-                <a href="mailto:projectmakersb@gmail.com" className="inline-flex items-center gap-1 text-xs text-primary-600 hover:underline mt-1">
+                <a href="mailto:projectmakersb@gmail.com?subject=HeartGuard%20ML%20%E2%80%94%20Project%20Inquiry" className="inline-flex items-center gap-1 text-xs text-primary-600 hover:underline mt-1">
                   ✉️ projectmakersb@gmail.com
                 </a>
               </div>
