@@ -2,10 +2,84 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#1e40af" />
+    <meta name="color-scheme" content="light" />
+    <meta name="description" content="An explainable machine learning framework for heart disease risk prediction using public health data. Compare models, view explainability, and try predictions." />
+    <meta name="keywords" content="heart disease, machine learning, risk prediction, explainable AI, cardiovascular, healthcare, scikit-learn, clinical data" />
+    <meta name="author" content="HeartGuard ML Research Team" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="HeartGuard ML — Explainable Heart Disease Risk Prediction" />
+    <meta property="og:description" content="An end-to-end explainable ML framework for heart disease risk prediction with calibrated probabilities, feature importance, and accessible web interface." />
+    <meta property="og:image" content="/icons/icon-192.png" />
+    <meta property="og:site_name" content="HeartGuard ML" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="HeartGuard ML — Explainable Heart Disease Risk Prediction" />
+    <meta name="twitter:description" content="An end-to-end explainable ML framework for heart disease risk prediction." />
+    <meta name="twitter:image" content="/icons/icon-192.png" />
+
+    <!-- Apple PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="HeartGuard ML" />
+    <link rel="apple-touch-icon" href="/icons/icon-152.png" />
+
+    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/heart.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Heart Disease Risk Prediction</title>
+    <link rel="icon" type="image/png" sizes="192x192" href="/icons/icon-192.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-96.png" />
+    <link rel="shortcut icon" href="/heart.svg" />
+
+    <!-- Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+    <title>HeartGuard ML — Heart Disease Risk Prediction</title>
+
+    <!-- Service Worker Registration -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').then(
+            (registration) => {
+              console.log('SW registered:', registration.scope);
+            },
+            (err) => {
+              console.log('SW registration failed:', err);
+            }
+          );
+        });
+      }
+    </script>
+
+    <!-- Install Prompt -->
+    <script>
+      let deferredPrompt;
+      window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        window.__installPrompt = deferredPrompt;
+        window.dispatchEvent(new Event('pwa-install-available'));
+      });
+
+      window.addEventListener('appinstalled', () => {
+        deferredPrompt = null;
+        window.__installPrompt = null;
+        console.log('PWA installed');
+      });
+    </script>
   </head>
   <body class="bg-gray-50 min-h-screen">
     <div id="root"></div>

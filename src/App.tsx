@@ -3,6 +3,7 @@ import LandingPage from './pages/LandingPage'
 import PredictPage from './pages/PredictPage'
 import DashboardPage from './pages/DashboardPage'
 import ResearchPage from './pages/ResearchPage'
+import PwaInstallBanner from './components/PwaInstallBanner'
 import { Heart, Activity, BarChart3, BookOpen } from 'lucide-react'
 
 export type Page = 'home' | 'predict' | 'dashboard' | 'research'
@@ -41,6 +42,9 @@ export default function App() {
         {page === 'dashboard' && <DashboardPage />}
         {page === 'research' && <ResearchPage onNavigate={setPage} />}
       </main>
+
+      {/* PWA Install Banner */}
+      <PwaInstallBanner />
 
       {/* Footer Disclaimer */}
       <footer className="border-t border-gray-100 bg-white/50 mt-16">
