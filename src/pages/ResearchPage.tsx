@@ -5,6 +5,7 @@ import {
   FileText, Github, Download, Clock, Check, X, ArrowRight, Search,
   TrendingUp, TrendingDown, Info, Layers, Zap, Users, Beaker, Lightbulb
 } from 'lucide-react'
+import FloatingHearts from '../components/FloatingHearts'
 
 /* ──────────────────────────────────────────────
    DATA — All sourced from repository files
@@ -390,27 +391,38 @@ export default function ResearchPage({ onNavigate }: Props) {
   return (
     <div className="space-y-0">
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-primary-900 to-gray-900 text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-24">
-        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(255,255,255,0.08) 0%, transparent 50%)' }} />
+      <section className="relative overflow-hidden text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-24" style={{ background: 'linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #e94560 100%)' }}>
+        {/* Decorative elements */}
+        <div className="absolute inset-0">
+          <div className="absolute top-0 left-0 w-60 h-60 bg-rose-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-0 w-80 h-80 bg-orange-500/20 rounded-full blur-3xl" />
+          <div className="absolute top-1/2 left-1/3 w-40 h-40 bg-pink-500/10 rounded-full blur-2xl" />
+          {/* Heart pattern overlay */}
+          <div className="absolute inset-0 opacity-5" style={{ backgroundImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 100 100\' width=\'50\' height=\'50\'%3E%3Cpath d=\'M50 75 C35 55, 10 40, 10 25 C10 15, 20 8, 32 8 C40 8, 46 13, 50 18 C54 13, 60 8, 68 8 C80 8, 90 15, 90 25 C90 40, 65 55, 50 75Z\' fill=\'white\'/%3E%3C/svg%3E")', backgroundSize: '60px 60px' }} />
+        </div>
         <div className="relative max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-blue-200 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+          {/* Floating heart */}
+          <div className="flex justify-center mb-4">
+            <img src="/heart-illustration.svg" alt="" className="w-16 h-16 sm:w-20 sm:h-20 float-3d drop-shadow-2xl" />
+          </div>
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-rose-200 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6 border border-white/10">
             <Beaker className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             Research Project
           </div>
           <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold leading-tight mb-4 sm:mb-6 text-balance">
             {RESEARCH_META.title}
           </h1>
-          <p className="text-sm sm:text-base lg:text-lg text-blue-200/80 max-w-3xl mx-auto mb-6 sm:mb-10 leading-relaxed px-2">
+          <p className="text-sm sm:text-base lg:text-lg text-rose-100/80 max-w-3xl mx-auto mb-6 sm:mb-10 leading-relaxed px-2">
             {RESEARCH_META.subtitle}
           </p>
           <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4">
-            <button onClick={() => document.getElementById('section-overview')?.scrollIntoView({ behavior: 'smooth' })} className="w-full sm:w-auto bg-white text-gray-900 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors shadow-lg text-sm sm:text-base">
+            <button onClick={() => document.getElementById('section-overview')?.scrollIntoView({ behavior: 'smooth' })} className="w-full sm:w-auto glass text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-white/20 transition-all shadow-lg text-sm sm:text-base hover:scale-105">
               <FileText className="w-4 h-4 inline mr-2" />View Research
             </button>
-            <a href={RESEARCH_META.repo} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto bg-white/10 backdrop-blur text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-white/20 transition-colors border border-white/20 text-center text-sm sm:text-base">
+            <a href={RESEARCH_META.repo} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto bg-gradient-to-r from-rose-500 to-orange-500 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:from-rose-600 hover:to-orange-600 transition-all border-0 text-center text-sm sm:text-base shadow-lg hover:scale-105">
               <Github className="w-4 h-4 inline mr-2" />View on GitHub
             </a>
-            <button onClick={() => onNavigate('predict')} className="w-full sm:w-auto bg-primary-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-primary-700 transition-colors shadow-lg text-sm sm:text-base">
+            <button onClick={() => onNavigate('predict')} className="w-full sm:w-auto bg-white text-gray-900 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-gray-100 transition-all shadow-lg text-sm sm:text-base hover:scale-105">
               <Activity className="w-4 h-4 inline mr-2" />Try Prediction
             </button>
           </div>
@@ -420,14 +432,15 @@ export default function ResearchPage({ onNavigate }: Props) {
       {/* ── RESEARCH METADATA ── */}
       <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 -mt-6 sm:-mt-8 relative z-10">
         {[
-          { l: 'Dataset', v: 'Cleveland, 303 pts' },
-          { l: 'Best Model', v: 'Log. Regression' },
-          { l: 'CV ROC-AUC', v: '0.9109' },
-          { l: 'Test ROC-AUC', v: '0.8885' },
-          { l: 'Academic Year', v: RESEARCH_META.academicYear },
-          { l: 'Version', v: RESEARCH_META.version },
+          { l: 'Dataset', v: 'Cleveland, 303 pts', c: 'from-rose-500 to-red-500' },
+          { l: 'Best Model', v: 'Log. Regression', c: 'from-orange-500 to-amber-500' },
+          { l: 'CV ROC-AUC', v: '0.9109', c: 'from-emerald-500 to-teal-500' },
+          { l: 'Test ROC-AUC', v: '0.8885', c: 'from-blue-500 to-indigo-500' },
+          { l: 'Academic Year', v: RESEARCH_META.academicYear, c: 'from-purple-500 to-violet-500' },
+          { l: 'Version', v: RESEARCH_META.version, c: 'from-pink-500 to-rose-500' },
         ].map((item, i) => (
-          <div key={i} className="bg-white rounded-xl shadow-lg border border-gray-100 p-2.5 sm:p-4 text-center">
+          <div key={i} className="relative overflow-hidden bg-white rounded-xl shadow-lg border border-gray-100 p-2.5 sm:p-4 text-center group hover:shadow-xl hover:-translate-y-1 transition-all duration-300">
+            <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${item.c}`} />
             <div className="text-[10px] sm:text-xs text-gray-500 mb-0.5 sm:mb-1">{item.l}</div>
             <div className="text-xs sm:text-sm font-bold text-gray-900">{item.v}</div>
           </div>
