@@ -3,10 +3,13 @@ import LandingPage from './pages/LandingPage'
 import PredictPage from './pages/PredictPage'
 import DashboardPage from './pages/DashboardPage'
 import ResearchPage from './pages/ResearchPage'
+import TermsPage from './pages/TermsPage'
+import PrivacyPage from './pages/PrivacyPage'
+import GuidelinesPage from './pages/GuidelinesPage'
 import PwaInstallBanner from './components/PwaInstallBanner'
-import { Heart, Activity, BarChart3, BookOpen, Menu, X } from 'lucide-react'
+import { Heart, Activity, BarChart3, BookOpen, Menu, X, FileText, Shield, BookMarked, Github } from 'lucide-react'
 
-export type Page = 'home' | 'predict' | 'dashboard' | 'research'
+export type Page = 'home' | 'predict' | 'dashboard' | 'research' | 'terms' | 'privacy' | 'guidelines'
 
 export default function App() {
   const [page, setPage] = useState<Page>('home')
@@ -86,6 +89,11 @@ export default function App() {
                   {item.label}
                 </button>
               ))}
+              <div className="border-t border-gray-100 pt-2 mt-2">
+                <button onClick={() => handleNav('guidelines')} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">
+                  <BookMarked className="w-5 h-5" /> Guidelines
+                </button>
+              </div>
             </div>
           </div>
         )}
@@ -97,6 +105,9 @@ export default function App() {
         {page === 'predict' && <PredictPage />}
         {page === 'dashboard' && <DashboardPage />}
         {page === 'research' && <ResearchPage onNavigate={handleNav} />}
+        {page === 'terms' && <TermsPage onNavigate={handleNav} />}
+        {page === 'privacy' && <PrivacyPage onNavigate={handleNav} />}
+        {page === 'guidelines' && <GuidelinesPage onNavigate={handleNav} />}
       </main>
 
       {/* PWA Install Banner */}
@@ -122,16 +133,73 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Footer Disclaimer - hidden on mobile (bottom tab bar present) */}
-      <footer className="hidden sm:block border-t border-gray-100 bg-white/50 mt-16 pb-20 sm:pb-0">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <p className="text-xs text-gray-500 text-center leading-relaxed max-w-3xl mx-auto">
-            <strong className="text-gray-600">Medical Disclaimer:</strong> This application is a
-            machine-learning research and educational tool. It is <strong>not</strong> a medical
-            diagnostic device. Predictions should not replace evaluation by a qualified healthcare
-            professional. This model was trained on a limited dataset (303 patients) and may not
-            generalize across all populations. Always consult a physician for medical advice.
-          </p>
+      {/* Footer - Desktop */}
+      <footer className="hidden sm:block border-t border-gray-100 bg-gradient-to-b from-white to-gray-50 mt-16">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* Medical Disclaimer */}
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
+            <p className="text-xs text-amber-800 text-center leading-relaxed max-w-3xl mx-auto">
+              <strong>Medical Disclaimer:</strong> This application is a
+              machine-learning research and educational tool. It is <strong>not</strong> a medical
+              diagnostic device. Predictions should not replace evaluation by a qualified healthcare
+              professional. This model was trained on a limited dataset (303 patients) and may not
+              generalize across all populations. Always consult a physician for medical advice.
+            </p>
+          </div>
+
+          {/* Footer Grid */}
+          <div className="grid sm:grid-cols-3 gap-8 mb-8">
+            {/* Developer Info */}
+            <div>
+              <div className="flex items-center gap-2 mb-3">
+                <Heart className="w-5 h-5 fill-red-500 text-red-500" />
+                <span className="font-bold text-gray-900">HeartGuard ML</span>
+              </div>
+              <p className="text-sm text-gray-600 leading-relaxed">
+                An explainable machine learning framework for heart disease risk prediction using public health data.
+              </p>
+              <div className="mt-3 space-y-1">
+                <p className="text-sm font-semibold text-gray-800">Souvik Barui</p>
+                <p className="text-xs text-gray-500">Research & Development</p>
+                <a href="https://github.com/souvikbarui2003" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-primary-600 hover:underline mt-1">
+                  <Github className="w-3 h-3" />github.com/souvikbarui2003
+                </a>
+              </div>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-3">Quick Links</h3>
+              <ul className="space-y-2 text-sm">
+                <li><button onClick={() => handleNav('predict')} className="text-gray-600 hover:text-primary-600 transition-colors">Risk Prediction</button></li>
+                <li><button onClick={() => handleNav('dashboard')} className="text-gray-600 hover:text-primary-600 transition-colors">Model Dashboard</button></li>
+                <li><button onClick={() => handleNav('research')} className="text-gray-600 hover:text-primary-600 transition-colors">Research Paper</button></li>
+                <li><button onClick={() => handleNav('guidelines')} className="text-gray-600 hover:text-primary-600 transition-colors">Usage Guidelines</button></li>
+                <li><a href="https://github.com/souvikbarui2003/ML-project-Heart-Disease" target="_blank" rel="noopener noreferrer" className="text-gray-600 hover:text-primary-600 transition-colors">GitHub Repository</a></li>
+              </ul>
+            </div>
+
+            {/* Legal */}
+            <div>
+              <h3 className="font-semibold text-gray-900 mb-3">Legal</h3>
+              <ul className="space-y-2 text-sm">
+                <li><button onClick={() => handleNav('terms')} className="text-gray-600 hover:text-primary-600 transition-colors">Terms & Conditions</button></li>
+                <li><button onClick={() => handleNav('privacy')} className="text-gray-600 hover:text-primary-600 transition-colors">Privacy Policy</button></li>
+                <li><button onClick={() => handleNav('guidelines')} className="text-gray-600 hover:text-primary-600 transition-colors">Usage Guidelines</button></li>
+                <li><a href="/LICENSE" className="text-gray-600 hover:text-primary-600 transition-colors">MIT License</a></li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="border-t border-gray-200 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p className="text-xs text-gray-500 text-center sm:text-left">
+              © 2024-2026 Souvik Barui. Built with ❤️ for healthcare AI research.
+            </p>
+            <p className="text-xs text-gray-400 text-center sm:text-right">
+              Heart Disease Risk Prediction System v2.0.0
+            </p>
+          </div>
         </div>
       </footer>
 
