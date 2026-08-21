@@ -7,21 +7,21 @@ Usage:
 import json
 import sys
 
-from src.config import METRICS_DIR
-from src.data.loader import load_dataset
-from src.features.preprocessing import prepare_data
-from src.evaluation.metrics import (
+from ml.config import METRICS_DIR
+from ml.data.loader import load_dataset
+from ml.features.preprocessing import prepare_data
+from ml.evaluation.metrics import (
     evaluate_all_models,
     get_classification_report,
 )
-from src.evaluation.plots import (
+from ml.evaluation.plots import (
     plot_confusion_matrices,
     plot_pr_curves,
     plot_roc_curves,
 )
-from src.inference.predictor import load_model
-from src.inference.explainer import get_global_feature_importance
-from src.utils.logging import logger
+from ml.inference.predictor import load_model
+from ml.inference.explainer import get_global_feature_importance
+from ml.utils.logging import logger
 
 
 def main() -> None:

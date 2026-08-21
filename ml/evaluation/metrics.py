@@ -17,7 +17,7 @@ from sklearn.metrics import (
     roc_curve,
 )
 
-from src.utils.logging import logger
+from ml.utils.logging import logger
 
 
 def calculate_metrics(

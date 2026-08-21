@@ -21,14 +21,14 @@ from sklearn.model_selection import train_test_split
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
-from src.config import (
+from ml.config import (
     CATEGORICAL_COLUMNS,
     NUMERICAL_COLUMNS,
     RANDOM_SEED,
     TARGET_COLUMN,
     TEST_SIZE,
 )
-from src.utils.logging import logger
+from ml.utils.logging import logger
 
 
 def remove_duplicates(df: pd.DataFrame) -> pd.DataFrame:

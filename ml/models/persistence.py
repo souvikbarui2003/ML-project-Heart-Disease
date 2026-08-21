@@ -11,8 +11,8 @@ import joblib
 import numpy as np
 import pandas as pd
 
-from src.config import MODEL_DIR, MODEL_VERSION
-from src.utils.logging import logger
+from ml.config import MODEL_DIR, MODEL_VERSION
+from ml.utils.logging import logger
 
 
 def save_model(

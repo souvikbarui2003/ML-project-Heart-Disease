@@ -5,13 +5,13 @@ from typing import List
 
 import pandas as pd
 
-from src.config import (
+from ml.config import (
     COLUMN_RANGES,
     CATEGORICAL_COLUMNS,
     NUMERICAL_COLUMNS,
     TARGET_COLUMN,
 )
-from src.utils.logging import logger
+from ml.utils.logging import logger
 
 
 class DataValidationError(Exception):

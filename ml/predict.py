@@ -10,10 +10,10 @@ import sys
 
 import numpy as np
 
-from src.features.preprocessing import build_preprocessing_pipeline
-from src.inference.explainer import get_feature_importance, get_shap_explanation
-from src.inference.predictor import load_model, predict
-from src.utils.logging import logger
+from ml.features.preprocessing import build_preprocessing_pipeline
+from ml.inference.explainer import get_feature_importance, get_shap_explanation
+from ml.inference.predictor import load_model, predict
+from ml.utils.logging import logger
 
 
 def parse_args() -> argparse.Namespace:

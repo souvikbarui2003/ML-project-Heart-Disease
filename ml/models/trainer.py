@@ -20,8 +20,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.svm import SVC
 from sklearn.tree import DecisionTreeClassifier
 
-from src.config import CV_FOLDS, RANDOM_SEED
-from src.utils.logging import logger
+from ml.config import CV_FOLDS, RANDOM_SEED
+from ml.utils.logging import logger
 
 
 def get_model_configs() -> Dict[str, Dict[str, Any]]:

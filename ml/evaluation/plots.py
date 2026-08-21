@@ -11,8 +11,8 @@ import numpy as np
 import seaborn as sns
 from sklearn.metrics import confusion_matrix, precision_recall_curve, roc_curve
 
-from src.config import FIGURES_DIR
-from src.utils.logging import logger
+from ml.config import FIGURES_DIR
+from ml.utils.logging import logger
 
 
 # Consistent style

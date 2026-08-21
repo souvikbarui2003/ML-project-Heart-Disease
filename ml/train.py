@@ -8,29 +8,29 @@ import json
 import sys
 from pathlib import Path
 
-from src.config import (
+from ml.config import (
     METRICS_DIR,
     MODEL_DIR,
     RANDOM_SEED,
 )
-from src.data.loader import get_dataset_info, load_dataset
-from src.features.preprocessing import prepare_data
-from src.data.validation import validate_dataset
-from src.evaluation.metrics import evaluate_all_models
-from src.evaluation.plots import (
+from ml.data.loader import get_dataset_info, load_dataset
+from ml.features.preprocessing import prepare_data
+from ml.data.validation import validate_dataset
+from ml.evaluation.metrics import evaluate_all_models
+from ml.evaluation.plots import (
     plot_confusion_matrices,
     plot_feature_importance,
     plot_model_comparison,
     plot_pr_curves,
     plot_roc_curves,
 )
-from src.models.persistence import (
+from ml.models.persistence import (
     compute_dataset_hash,
     get_model_info,
     save_model,
 )
-from src.models.trainer import select_best_model, train_all_models
-from src.utils.logging import logger
+from ml.models.trainer import select_best_model, train_all_models
+from ml.utils.logging import logger
 
 
 def main() -> None:

@@ -6,14 +6,14 @@ from typing import Tuple
 
 import pandas as pd
 
-from src.config import (
+from ml.config import (
     DATASET_FILENAME,
     RANDOM_SEED,
     RAW_DATA_DIR,
     TARGET_COLUMN,
     TEST_SIZE,
 )
-from src.utils.logging import logger
+from ml.utils.logging import logger
 
 
 def load_dataset(data_dir: Path = RAW_DATA_DIR) -> pd.DataFrame:
