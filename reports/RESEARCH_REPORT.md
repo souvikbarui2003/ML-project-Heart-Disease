@@ -1,5 +1,9 @@
 # Heart Disease Prediction System - Research Report
 
+**Author:** Souvik Barui
+**Date:** August 2026
+**Version:** 2.0.0
+
 ## Executive Summary
 
 This report documents the transformation of a basic ML notebook project into a comprehensive, production-ready heart disease risk prediction system. The enhanced system includes multiple ML models, probability calibration, explainability, a smart user interface, and comprehensive documentation.

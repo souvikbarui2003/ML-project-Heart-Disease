@@ -11,7 +11,7 @@
 
 ## An Explainable Machine Learning Framework for Heart Disease Risk Prediction
 
-**Student:** [Student Name]
+**Student:** Souvik Barui
 **Department:** [Department]
 **University:** [University]
 **Academic Year:** 2025-2026

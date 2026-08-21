@@ -1,5 +1,7 @@
 # Heart Disease Prediction System v2.0
 
+**Author/Developer:** Souvik Barui
+
 A comprehensive machine learning-based heart disease risk prediction system with explainability, calibration, and a smart user interface.
 
 ## Overview
@@ -305,6 +307,14 @@ MIT License - See [LICENSE](LICENSE) for details.
 - Cleveland Clinic Foundation
 - scikit-learn contributors
 - FastAPI and React communities
+
+---
+
+## Author
+
+**Souvik Barui** — Research & Development
+
+This project was designed, developed, and documented by Souvik Barui as a comprehensive machine learning research platform for heart disease risk prediction.
 
 ---
 

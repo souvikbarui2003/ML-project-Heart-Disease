@@ -6,7 +6,7 @@
 
 **Title:** An Explainable Machine Learning Framework for Heart Disease Risk Prediction Using Public Health Data
 
-**Student Name:** [Student Name to be filled]
+**Student Name:** Souvik Barui
 
 **Department:** [Department to be filled]
 
@@ -18,15 +18,15 @@
 
 **Project Type:** Major Project / Thesis
 
-**Guide/Supervisor:** [Supervisor Name to be filled]
+**Guide/Supervisor:** [Supervisor Name]
 
-**Team Members:** [Team members to be filled]
+**Team Members:** Souvik Barui
 
 ---
 
 ## Certificate
 
-This is to certify that the project entitled **"An Explainable Machine Learning Framework for Heart Disease Risk Prediction Using Public Health Data"** is a bonafide work carried out by [Student Name] in partial fulfillment of the requirements for the degree of [Degree Name] at [University Name].
+This is to certify that the project entitled **"An Explainable Machine Learning Framework for Heart Disease Risk Prediction Using Public Health Data"** is a bonafide work carried out by Souvik Barui in partial fulfillment of the requirements for the degree of [Degree Name] at [University Name].
 
 **Date:** _______________
 
