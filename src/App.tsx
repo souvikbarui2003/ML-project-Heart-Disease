@@ -2,9 +2,10 @@ import { useState } from 'react'
 import LandingPage from './pages/LandingPage'
 import PredictPage from './pages/PredictPage'
 import DashboardPage from './pages/DashboardPage'
-import { Heart, Activity, BarChart3 } from 'lucide-react'
+import ResearchPage from './pages/ResearchPage'
+import { Heart, Activity, BarChart3, BookOpen } from 'lucide-react'
 
-export type Page = 'home' | 'predict' | 'dashboard'
+export type Page = 'home' | 'predict' | 'dashboard' | 'research'
 
 export default function App() {
   const [page, setPage] = useState<Page>('home')
@@ -27,6 +28,7 @@ export default function App() {
               <NavLink active={page === 'home'} onClick={() => setPage('home')} icon={<Heart className="w-4 h-4" />} label="Home" />
               <NavLink active={page === 'predict'} onClick={() => setPage('predict')} icon={<Activity className="w-4 h-4" />} label="Predict" />
               <NavLink active={page === 'dashboard'} onClick={() => setPage('dashboard')} icon={<BarChart3 className="w-4 h-4" />} label="Dashboard" />
+              <NavLink active={page === 'research'} onClick={() => setPage('research')} icon={<BookOpen className="w-4 h-4" />} label="Research" />
             </div>
           </div>
         </div>
@@ -37,6 +39,7 @@ export default function App() {
         {page === 'home' && <LandingPage onNavigate={setPage} />}
         {page === 'predict' && <PredictPage />}
         {page === 'dashboard' && <DashboardPage />}
+        {page === 'research' && <ResearchPage onNavigate={setPage} />}
       </main>
 
       {/* Footer Disclaimer */}

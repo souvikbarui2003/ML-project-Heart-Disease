@@ -1,4 +1,4 @@
-import { Heart, Shield, Activity, BarChart3, AlertTriangle, Brain } from 'lucide-react'
+import { Heart, Shield, Activity, BarChart3, AlertTriangle, Brain, BookOpen } from 'lucide-react'
 import type { Page } from '../App'
 
 interface Props {
@@ -40,6 +40,13 @@ export default function LandingPage({ onNavigate }: Props) {
           >
             <BarChart3 className="w-5 h-5 inline mr-2" />
             View Dashboard
+          </button>
+          <button
+            onClick={() => onNavigate('research')}
+            className="btn-secondary text-lg px-8 py-4"
+          >
+            <BookOpen className="w-5 h-5 inline mr-2" />
+            Research Paper
           </button>
         </div>
       </section>
