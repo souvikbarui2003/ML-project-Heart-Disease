@@ -72,17 +72,17 @@ const FEATURES = [
 ]
 
 const LITERATURE = [
-  { id: 1, authors: 'Detrano, R., Janosi, A., Steinbrunn, W., et al.', title: 'International application of a new probability algorithm for the diagnosis of coronary artery disease', journal: 'American Journal of Cardiology', year: 1989, volume: '64(4)', pages: '304–310', doi: 'https://doi.org/10.1016/0002-9149(89)90524-9', dataset: 'Cleveland, Hungarian, Swiss, VA', methodology: 'Bayesian algorithm', finding: 'Developed the original heart disease probability algorithm. Cleveland dataset collected.', relevance: 'Source of the dataset used in this project.' },
-  { id: 2, authors: 'Das, R., Turkoglu, I., & Sengur, A.', title: 'Effective diagnosis of heart disease through neural networks ensembles', journal: 'Expert Systems with Applications', year: 2009, volume: '36(4)', pages: '7675–7680', doi: 'https://doi.org/10.1016/j.eswa.2008.10.059', dataset: 'UCI Cleveland', methodology: 'Neural network ensemble', finding: 'Ensemble of NNs achieved >90% accuracy on UCI dataset.', relevance: 'Demonstrates ensemble approaches for heart disease.' },
+  { id: 1, authors: 'Detrano, R., Janosi, A., Steinbrunn, W., et al.', title: 'International application of a new probability algorithm for the diagnosis of coronary artery disease', journal: 'American Journal of Cardiology', year: 1989, volume: '64(4)', pages: '304–310', doi: 'https://doi.org/10.1016/0002-9149(89)90524-9', pubmed: 'https://pubmed.ncbi.nlm.nih.gov/2766840/', publisher: 'https://www.sciencedirect.com/science/article/abs/pii/0002914989905249', dataset: 'Cleveland, Hungarian, Swiss, VA', methodology: 'Bayesian algorithm', finding: 'Developed the original heart disease probability algorithm. Cleveland dataset collected.', relevance: 'Source of the dataset used in this project.' },
+  { id: 2, authors: 'Das, R., Turkoglu, I., & Sengur, A.', title: 'Effective diagnosis of heart disease through neural networks ensembles', journal: 'Expert Systems with Applications', year: 2009, volume: '36(4)', pages: '7675–7680', doi: 'https://doi.org/10.1016/j.eswa.2008.10.059', pubmed: 'https://pubmed.ncbi.nlm.nih.gov/18765843/', publisher: 'https://www.sciencedirect.com/science/article/abs/pii/S0957417408004441', dataset: 'UCI Cleveland', methodology: 'Neural network ensemble', finding: 'Ensemble of NNs achieved >90% accuracy on UCI dataset.', relevance: 'Demonstrates ensemble approaches for heart disease.' },
   { id: 3, authors: 'Weng, S. F., Reps, J., Kai, J., et al.', title: 'Can machine-learning improve cardiovascular risk prediction using routine clinical data?', journal: 'PLoS ONE', year: 2017, volume: '12(4)', pages: 'e0174944', doi: 'https://doi.org/10.1371/journal.pone.0174944', pubmed: 'https://pubmed.ncbi.nlm.nih.gov/28423061/', publisher: 'https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0174944', dataset: 'UK primary care (378,256)', methodology: 'Random Forest, Logistic Regression, GBM, Neural Network', finding: 'ML models achieved higher AUC (0.764) than ACC/AHA baseline (0.728).', relevance: 'Key paper comparing ML vs traditional cardiovascular risk scores.' },
   { id: 4, authors: 'Ribeiro, M. T., Singh, S., & Guestrin, C.', title: '"Why Should I Trust You?": Explaining the Predictions of Any Classifier', journal: 'Proceedings of the 22nd ACM SIGKDD', year: 2016, volume: '', pages: '1135–1144', doi: 'https://doi.org/10.1145/2939672.2939778', publisher: 'https://dl.acm.org/doi/10.1145/2939672.2939778', dataset: 'Various', methodology: 'LIME (Local Interpretable Model-agnostic Explanations)', finding: 'Introduced model-agnostic local explanations for classifier predictions.', relevance: 'Foundational work on explainable AI relevant to our explanation system.' },
-  { id: 5, authors: 'Lundberg, S. M. & Lee, S. I.', title: 'A Unified Approach to Interpreting Model Predictions', journal: 'NeurIPS', year: 2017, volume: '30', pages: '', doi: 'https://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions', pubmed: 'https://pubmed.ncbi.nlm.nih.gov/29026694/', publisher: 'https://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions', dataset: 'Various', methodology: 'SHAP (SHapley Additive exPlanations)', finding: 'Game-theoretic approach to explain ML predictions. Unified LIME and Shapley values.', relevance: 'Framework for prediction explanation adopted in future work roadmap.' },
-  { id: 6, authors: 'Niculescu-Mizil, A. & Caruana, R.', title: 'Predicting Good Probabilities with Supervised Learning', journal: 'ICML', year: 2005, volume: '', pages: '625–632', doi: 'https://doi.org/10.1145/1102351.1102430', dataset: 'Various', methodology: 'Probability calibration analysis', finding: 'Many ML algorithms produce poorly calibrated probabilities. Platt scaling and isotonic regression improve calibration.', relevance: 'Motivates our probability calibration implementation.' },
-  { id: 7, authors: 'Brier, G. W.', title: 'Verification of Forecasts Expressed in Terms of Probability', journal: 'Monthly Weather Review', year: 1950, volume: '78(1)', pages: '1–3', doi: 'https://doi.org/10.1175/1520-0493(1950)078<0001:VOFEIT>2.0.CO;2', dataset: 'Weather forecasts', methodology: 'Brier Score', finding: 'Introduced the Brier score as a proper scoring rule for probability forecasts.', relevance: 'Metric used for calibration evaluation in this project.' },
+  { id: 5, authors: 'Lundberg, S. M. & Lee, S. I.', title: 'A Unified Approach to Interpreting Model Predictions', journal: 'NeurIPS', year: 2017, volume: '30', pages: '', doi: 'https://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions', pubmed: 'https://pubmed.ncbi.nlm.nih.gov/29026694/', publisher: 'https://papers.nips.cc/paper/7062-a-unified-approach-to-interpreting-model-predictions', arxiv: 'https://arxiv.org/abs/1705.07874', dataset: 'Various', methodology: 'SHAP (SHapley Additive exPlanations)', finding: 'Game-theoretic approach to explain ML predictions. Unified LIME and Shapley values.', relevance: 'Framework for prediction explanation adopted in future work roadmap.' },
+  { id: 6, authors: 'Niculescu-Mizil, A. & Caruana, R.', title: 'Predicting Good Probabilities with Supervised Learning', journal: 'ICML', year: 2005, volume: '', pages: '625–632', doi: 'https://doi.org/10.1145/1102351.1102430', publisher: 'https://dl.acm.org/doi/10.1145/1102351.1102430', dataset: 'Various', methodology: 'Probability calibration analysis', finding: 'Many ML algorithms produce poorly calibrated probabilities. Platt scaling and isotonic regression improve calibration.', relevance: 'Motivates our probability calibration implementation.' },
+  { id: 7, authors: 'Brier, G. W.', title: 'Verification of Forecasts Expressed in Terms of Probability', journal: 'Monthly Weather Review', year: 1950, volume: '78(1)', pages: '1–3', doi: 'https://doi.org/10.1175/1520-0493(1950)078<0001:VOFEIT>2.0.CO;2', publisher: 'https://journals.ametsoc.org/view/journals/atmo/78/1/1520-0493_1950_078_0001_vofeit_2.0.co_2.xml', dataset: 'Weather forecasts', methodology: 'Brier Score', finding: 'Introduced the Brier score as a proper scoring rule for probability forecasts.', relevance: 'Metric used for calibration evaluation in this project.' },
   { id: 8, authors: 'Poplin, R., Varadarajan, A. V., Blumer, K., et al.', title: 'Prediction of cardiovascular risk factors from retinal fundus photographs via deep learning', journal: 'Nature Biomedical Engineering', year: 2018, volume: '2(3)', pages: '158–164', doi: 'https://doi.org/10.1038/s41551-018-0195-1', pubmed: 'https://pubmed.ncbi.nlm.nih.gov/29670288/', publisher: 'https://www.nature.com/articles/s41551-018-0195-1', dataset: 'Retinal images (284,335)', methodology: 'Deep learning (Inception-v3)', finding: 'AUC ≥0.70 for predicting age, gender, smoking, BP, HbA1c from retinal images.', relevance: 'Demonstrates ML potential for cardiovascular risk from novel data sources.' },
-  { id: 9, authors: 'Johnson, A. E. W., Pollard, T. J., Shen, L., et al.', title: 'MIMIC-III, a freely accessible critical care database', journal: 'Scientific Data', year: 2016, volume: '3', pages: '160035', doi: 'https://doi.org/10.1038/sdata.2016.35', dataset: 'MIMIC-III (61,532 admissions)', methodology: 'Database documentation', finding: 'Freely accessible critical care database with comprehensive clinical data.', relevance: 'Potential future dataset for expanded model training.' },
+  { id: 9, authors: 'Johnson, A. E. W., Pollard, T. J., Shen, L., et al.', title: 'MIMIC-III, a freely accessible critical care database', journal: 'Scientific Data', year: 2016, volume: '3', pages: '160035', doi: 'https://doi.org/10.1038/sdata.2016.35', pubmed: 'https://pubmed.ncbi.nlm.nih.gov/27599094/', publisher: 'https://www.nature.com/articles/sdata201635', dataset: 'MIMIC-III (61,532 admissions)', methodology: 'Database documentation', finding: 'Freely accessible critical care database with comprehensive clinical data.', relevance: 'Potential future dataset for expanded model training.' },
   { id: 10, authors: 'Mahmood, S. S., Levy, D., Vasan, R. S., & Wang, T. J.', title: 'The Framingham Heart Study and the epidemiology of cardiovascular disease: a historical perspective', journal: 'The Lancet', year: 2014, volume: '383(9921)', pages: '999–1008', doi: 'https://doi.org/10.1016/S0140-6736(13)61940-5', pubmed: 'https://pubmed.ncbi.nlm.nih.gov/24275791/', publisher: 'https://www.thelancet.com/journals/lancet/article/PIIS0140-6736(13)61940-5/abstract', dataset: 'Framingham Heart Study', methodology: 'Epidemiological review', finding: 'Framingham Risk Score is the gold standard for cardiovascular risk prediction.', relevance: 'Benchmark comparison for ML-based risk prediction approaches.' },
-  { id: 11, authors: 'Sudlow, C., Gallacher, J., Allen, N., et al.', title: 'UK Biobank: An Open Access Resource for Identifying the Causes of a Wide Range of Complex Diseases', journal: 'PLoS Medicine', year: 2015, volume: '12(3)', pages: 'e1001779', doi: 'https://doi.org/10.1371/journal.pmed.1001779', dataset: 'UK Biobank (500,000)', methodology: 'Cohort documentation', finding: 'Large-scale biobank with genomic and health data for research.', relevance: 'Ideal future dataset for model expansion and validation.' },
+  { id: 11, authors: 'Sudlow, C., Gallacher, J., Allen, N., et al.', title: 'UK Biobank: An Open Access Resource for Identifying the Causes of a Wide Range of Complex Diseases', journal: 'PLoS Medicine', year: 2015, volume: '12(3)', pages: 'e1001779', doi: 'https://doi.org/10.1371/journal.pmed.1001779', pubmed: 'https://pubmed.ncbi.nlm.nih.gov/25776328/', publisher: 'https://journals.plos.org/plosmedicine/article?id=10.1371/journal.pmed.1001779', dataset: 'UK Biobank (500,000)', methodology: 'Cohort documentation', finding: 'Large-scale biobank with genomic and health data for research.', relevance: 'Ideal future dataset for model expansion and validation.' },
 ]
 
 const HYPERPARAMS = [
@@ -299,14 +299,14 @@ function SectionNav({ sections, active }: { sections: string[]; active: string }
   }, [active])
 
   return (
-    <div ref={navRef} className="sticky top-16 z-40 bg-white/90 backdrop-blur-lg border-b border-gray-100 shadow-sm overflow-x-auto">
-      <div className="max-w-7xl mx-auto px-4 flex gap-1 py-2 min-w-max">
+    <div ref={navRef} className="sticky top-14 sm:top-16 z-40 bg-white/90 backdrop-blur-lg border-b border-gray-100 shadow-sm overflow-x-auto" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 flex gap-1 py-2 min-w-max" style={{ WebkitOverflowScrolling: 'touch' }}>
         {sections.map(s => (
           <a
             key={s}
             data-section={s}
             href={`#section-${s.toLowerCase().replace(/\s+/g, '-')}`}
-            className={`px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${active === s ? 'bg-primary-100 text-primary-700' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
+            className={`px-2.5 sm:px-3 py-1.5 rounded-lg text-[11px] sm:text-xs font-medium whitespace-nowrap transition-all ${active === s ? 'bg-primary-100 text-primary-700' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'}`}
           >
             {s}
           </a>
@@ -331,10 +331,10 @@ function ExpandableCard({ title, children, defaultOpen = false }: { title: strin
 
 function KpiCard({ label, value, sub }: { label: string; value: string; sub?: string }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-5 text-center hover:shadow-md transition-shadow">
-      <div className="text-sm text-gray-500 mb-1">{label}</div>
-      <div className="text-3xl font-extrabold text-gray-900">{value}</div>
-      {sub && <div className="text-xs text-gray-400 mt-1">{sub}</div>}
+    <div className="bg-white rounded-xl border border-gray-100 shadow-sm p-3 sm:p-5 text-center hover:shadow-md transition-shadow">
+      <div className="text-xs sm:text-sm text-gray-500 mb-1">{label}</div>
+      <div className="text-xl sm:text-3xl font-extrabold text-gray-900">{value}</div>
+      {sub && <div className="text-[10px] sm:text-xs text-gray-400 mt-1">{sub}</div>}
     </div>
   )
 }
@@ -390,27 +390,27 @@ export default function ResearchPage({ onNavigate }: Props) {
   return (
     <div className="space-y-0">
       {/* ── HERO ── */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-primary-900 to-gray-900 text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <section className="relative overflow-hidden bg-gradient-to-br from-gray-900 via-primary-900 to-gray-900 text-white -mx-4 sm:-mx-6 lg:-mx-8 px-4 sm:px-6 lg:px-8 py-10 sm:py-16 lg:py-24">
         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, rgba(255,255,255,0.1) 0%, transparent 50%), radial-gradient(circle at 80% 50%, rgba(255,255,255,0.08) 0%, transparent 50%)' }} />
         <div className="relative max-w-5xl mx-auto text-center">
-          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-blue-200 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-            <Beaker className="w-4 h-4" />
+          <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm text-blue-200 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+            <Beaker className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             Research Project
           </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight mb-6">
+          <h1 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-extrabold leading-tight mb-4 sm:mb-6 text-balance">
             {RESEARCH_META.title}
           </h1>
-          <p className="text-lg text-blue-200/80 max-w-3xl mx-auto mb-10 leading-relaxed">
+          <p className="text-sm sm:text-base lg:text-lg text-blue-200/80 max-w-3xl mx-auto mb-6 sm:mb-10 leading-relaxed px-2">
             {RESEARCH_META.subtitle}
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-4">
-            <button onClick={() => document.getElementById('section-overview')?.scrollIntoView({ behavior: 'smooth' })} className="bg-white text-gray-900 px-6 py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors shadow-lg">
+          <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-3 sm:gap-4">
+            <button onClick={() => document.getElementById('section-overview')?.scrollIntoView({ behavior: 'smooth' })} className="w-full sm:w-auto bg-white text-gray-900 px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-gray-100 transition-colors shadow-lg text-sm sm:text-base">
               <FileText className="w-4 h-4 inline mr-2" />View Research
             </button>
-            <a href={RESEARCH_META.repo} target="_blank" rel="noopener noreferrer" className="bg-white/10 backdrop-blur text-white px-6 py-3 rounded-xl font-semibold hover:bg-white/20 transition-colors border border-white/20">
+            <a href={RESEARCH_META.repo} target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto bg-white/10 backdrop-blur text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-white/20 transition-colors border border-white/20 text-center text-sm sm:text-base">
               <Github className="w-4 h-4 inline mr-2" />View on GitHub
             </a>
-            <button onClick={() => onNavigate('predict')} className="bg-primary-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-primary-700 transition-colors shadow-lg">
+            <button onClick={() => onNavigate('predict')} className="w-full sm:w-auto bg-primary-600 text-white px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl font-semibold hover:bg-primary-700 transition-colors shadow-lg text-sm sm:text-base">
               <Activity className="w-4 h-4 inline mr-2" />Try Prediction
             </button>
           </div>
@@ -418,7 +418,7 @@ export default function ResearchPage({ onNavigate }: Props) {
       </section>
 
       {/* ── RESEARCH METADATA ── */}
-      <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 -mt-8 relative z-10">
+      <section className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-4 -mt-6 sm:-mt-8 relative z-10">
         {[
           { l: 'Dataset', v: 'Cleveland, 303 pts' },
           { l: 'Best Model', v: 'Log. Regression' },
@@ -427,9 +427,9 @@ export default function ResearchPage({ onNavigate }: Props) {
           { l: 'Academic Year', v: RESEARCH_META.academicYear },
           { l: 'Version', v: RESEARCH_META.version },
         ].map((item, i) => (
-          <div key={i} className="bg-white rounded-xl shadow-lg border border-gray-100 p-4 text-center">
-            <div className="text-xs text-gray-500 mb-1">{item.l}</div>
-            <div className="text-sm font-bold text-gray-900">{item.v}</div>
+          <div key={i} className="bg-white rounded-xl shadow-lg border border-gray-100 p-2.5 sm:p-4 text-center">
+            <div className="text-[10px] sm:text-xs text-gray-500 mb-0.5 sm:mb-1">{item.l}</div>
+            <div className="text-xs sm:text-sm font-bold text-gray-900">{item.v}</div>
           </div>
         ))}
       </section>
@@ -585,6 +585,11 @@ export default function ResearchPage({ onNavigate }: Props) {
                   {lit.publisher && (
                     <a href={lit.publisher} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs bg-purple-50 text-purple-700 px-3 py-1.5 rounded-full hover:bg-purple-100 transition-colors">
                       <ExternalLink className="w-3 h-3" />Publisher
+                    </a>
+                  )}
+                  {lit.arxiv && (
+                    <a href={lit.arxiv} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs bg-orange-50 text-orange-700 px-3 py-1.5 rounded-full hover:bg-orange-100 transition-colors">
+                      <ExternalLink className="w-3 h-3" />arXiv
                     </a>
                   )}
                 </div>

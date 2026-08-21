@@ -9,43 +9,43 @@ export default function LandingPage({ onNavigate }: Props) {
   return (
     <div className="space-y-16">
       {/* Hero Section */}
-      <section className="text-center py-12 sm:py-20">
-        <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-4 py-1.5 rounded-full text-sm font-medium mb-6">
-          <Heart className="w-4 h-4 fill-red-500" />
+      <section className="text-center py-8 sm:py-12 lg:py-20">
+        <div className="inline-flex items-center gap-2 bg-red-50 text-red-700 px-3 sm:px-4 py-1.5 rounded-full text-xs sm:text-sm font-medium mb-4 sm:mb-6">
+          <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-red-500" />
           Machine Learning Risk Assessment
         </div>
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
+        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-4 sm:mb-6">
           Heart Disease Risk
           <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-600 to-red-500">
             Prediction Engine
           </span>
         </h1>
-        <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+        <p className="text-base sm:text-lg lg:text-xl text-gray-600 max-w-2xl mx-auto mb-6 sm:mb-10 leading-relaxed px-2">
           A machine-learning tool that estimates heart-disease risk based on clinical features
           learned from the UCI Heart Disease dataset. Built with scikit-learn, XGBoost, and SHAP
           for explainable predictions.
         </p>
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
           <button
             onClick={() => onNavigate('predict')}
-            className="btn-primary text-lg px-8 py-4"
+            className="btn-primary w-full sm:w-auto"
           >
-            <Activity className="w-5 h-5 inline mr-2" />
+            <Activity className="w-4 h-4 sm:w-5 sm:h-5 inline mr-2" />
             Try Prediction
           </button>
           <button
             onClick={() => onNavigate('dashboard')}
-            className="btn-secondary text-lg px-8 py-4"
+            className="btn-secondary w-full sm:w-auto"
           >
-            <BarChart3 className="w-5 h-5 inline mr-2" />
+            <BarChart3 className="w-4 h-4 sm:w-5 sm:h-5 inline mr-2" />
             View Dashboard
           </button>
           <button
             onClick={() => onNavigate('research')}
-            className="btn-secondary text-lg px-8 py-4"
+            className="btn-secondary w-full sm:w-auto"
           >
-            <BookOpen className="w-5 h-5 inline mr-2" />
+            <BookOpen className="w-4 h-4 sm:w-5 sm:h-5 inline mr-2" />
             Research Paper
           </button>
         </div>
@@ -70,7 +70,7 @@ export default function LandingPage({ onNavigate }: Props) {
       {/* How It Works */}
       <section>
         <h2 className="text-2xl font-bold text-center text-gray-900 mb-10">How It Works</h2>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           <FeatureCard
             icon={<Brain className="w-6 h-6 text-primary-600" />}
             title="Trained on Clinical Data"
