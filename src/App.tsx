@@ -7,7 +7,7 @@ import TermsPage from './pages/TermsPage'
 import PrivacyPage from './pages/PrivacyPage'
 import GuidelinesPage from './pages/GuidelinesPage'
 import PwaInstallBanner from './components/PwaInstallBanner'
-import { Heart, Activity, BarChart3, BookOpen, Menu, X, FileText, Shield, BookMarked, Github } from 'lucide-react'
+import { Heart, Activity, BarChart3, BookOpen, Menu, X, Shield, BookMarked, Github, FileText, ChevronRight } from 'lucide-react'
 
 export type Page = 'home' | 'predict' | 'dashboard' | 'research' | 'terms' | 'privacy' | 'guidelines'
 
@@ -58,6 +58,16 @@ export default function App() {
                   {item.label}
                 </button>
               ))}
+              <div className="w-px h-6 bg-gray-200 mx-1" />
+              <button onClick={() => handleNav('guidelines')} className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-50">
+                <BookMarked className="w-4 h-4" /> Guide
+              </button>
+              <button onClick={() => handleNav('terms')} className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-50">
+                <Shield className="w-4 h-4" /> T&C
+              </button>
+              <button onClick={() => handleNav('privacy')} className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-700 hover:bg-gray-50">
+                <FileText className="w-4 h-4" /> Privacy
+              </button>
             </div>
 
             {/* Mobile Hamburger */}
@@ -73,8 +83,9 @@ export default function App() {
 
         {/* Mobile Dropdown Menu */}
         {mobileMenuOpen && (
-          <div className="sm:hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg">
+          <div className="sm:hidden border-t border-gray-100 bg-white/95 backdrop-blur-lg max-h-[80vh] overflow-y-auto">
             <div className="px-4 py-2 space-y-1">
+              {/* Main Navigation */}
               {navItems.map(item => (
                 <button
                   key={item.page}
@@ -89,10 +100,42 @@ export default function App() {
                   {item.label}
                 </button>
               ))}
+
+              {/* Secondary Pages */}
               <div className="border-t border-gray-100 pt-2 mt-2">
-                <button onClick={() => handleNav('guidelines')} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">
-                  <BookMarked className="w-5 h-5" /> Guidelines
+                <p className="px-4 py-1 text-xs font-semibold text-gray-400 uppercase tracking-wider">More</p>
+                <button onClick={() => handleNav('guidelines')} className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">
+                  <div className="flex items-center gap-3">
+                    <BookMarked className="w-5 h-5" />
+                    Usage Guidelines
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-gray-400" />
                 </button>
+                <button onClick={() => handleNav('terms')} className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">
+                  <div className="flex items-center gap-3">
+                    <Shield className="w-5 h-5" />
+                    Terms & Conditions
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-gray-400" />
+                </button>
+                <button onClick={() => handleNav('privacy')} className="w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium text-gray-600 hover:bg-gray-50">
+                  <div className="flex items-center gap-3">
+                    <FileText className="w-5 h-5" />
+                    Privacy Policy
+                  </div>
+                  <ChevronRight className="w-4 h-4 text-gray-400" />
+                </button>
+              </div>
+
+              {/* Developer Info */}
+              <div className="border-t border-gray-100 pt-3 mt-2 pb-2">
+                <div className="px-4 py-2 bg-gray-50 rounded-xl">
+                  <p className="text-xs font-semibold text-gray-800">Souvik Barui</p>
+                  <p className="text-[10px] text-gray-500">Research & Development</p>
+                  <a href="https://github.com/souvikbarui2003" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[10px] text-primary-600 hover:underline mt-1">
+                    <Github className="w-3 h-3" />GitHub Profile
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -121,7 +164,9 @@ export default function App() {
               key={item.page}
               onClick={() => handleNav(item.page)}
               className={`flex flex-col items-center gap-1 px-3 py-1.5 rounded-lg transition-all min-w-[60px] ${
-                page === item.page
+                page === 'home'
+                  ? 'text-primary-600'
+                  : page === item.page
                   ? 'text-primary-600'
                   : 'text-gray-400'
               }`}
@@ -133,29 +178,28 @@ export default function App() {
         </div>
       </nav>
 
-      {/* Footer - Desktop */}
-      <footer className="hidden sm:block border-t border-gray-100 bg-gradient-to-b from-white to-gray-50 mt-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      {/* Footer - Both Mobile and Desktop */}
+      <footer className="border-t border-gray-100 bg-gradient-to-b from-white to-gray-50 mt-16 pb-24 sm:pb-0">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           {/* Medical Disclaimer */}
-          <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 mb-6">
-            <p className="text-xs text-amber-800 text-center leading-relaxed max-w-3xl mx-auto">
+          <div className="bg-amber-50 border border-amber-200 rounded-xl p-3 sm:p-4 mb-6">
+            <p className="text-[10px] sm:text-xs text-amber-800 text-center leading-relaxed max-w-3xl mx-auto">
               <strong>Medical Disclaimer:</strong> This application is a
               machine-learning research and educational tool. It is <strong>not</strong> a medical
               diagnostic device. Predictions should not replace evaluation by a qualified healthcare
-              professional. This model was trained on a limited dataset (303 patients) and may not
-              generalize across all populations. Always consult a physician for medical advice.
+              professional. Always consult a physician for medical advice.
             </p>
           </div>
 
           {/* Footer Grid */}
-          <div className="grid sm:grid-cols-3 gap-8 mb-8">
+          <div className="grid sm:grid-cols-3 gap-6 sm:gap-8 mb-6 sm:mb-8">
             {/* Developer Info */}
             <div>
               <div className="flex items-center gap-2 mb-3">
                 <Heart className="w-5 h-5 fill-red-500 text-red-500" />
                 <span className="font-bold text-gray-900">HeartGuard ML</span>
               </div>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-xs sm:text-sm text-gray-600 leading-relaxed">
                 An explainable machine learning framework for heart disease risk prediction using public health data.
               </p>
               <div className="mt-3 space-y-1">
@@ -169,8 +213,8 @@ export default function App() {
 
             {/* Quick Links */}
             <div>
-              <h3 className="font-semibold text-gray-900 mb-3">Quick Links</h3>
-              <ul className="space-y-2 text-sm">
+              <h3 className="font-semibold text-gray-900 mb-3 text-sm">Quick Links</h3>
+              <ul className="space-y-2 text-xs sm:text-sm">
                 <li><button onClick={() => handleNav('predict')} className="text-gray-600 hover:text-primary-600 transition-colors">Risk Prediction</button></li>
                 <li><button onClick={() => handleNav('dashboard')} className="text-gray-600 hover:text-primary-600 transition-colors">Model Dashboard</button></li>
                 <li><button onClick={() => handleNav('research')} className="text-gray-600 hover:text-primary-600 transition-colors">Research Paper</button></li>
@@ -181,8 +225,8 @@ export default function App() {
 
             {/* Legal */}
             <div>
-              <h3 className="font-semibold text-gray-900 mb-3">Legal</h3>
-              <ul className="space-y-2 text-sm">
+              <h3 className="font-semibold text-gray-900 mb-3 text-sm">Legal</h3>
+              <ul className="space-y-2 text-xs sm:text-sm">
                 <li><button onClick={() => handleNav('terms')} className="text-gray-600 hover:text-primary-600 transition-colors">Terms & Conditions</button></li>
                 <li><button onClick={() => handleNav('privacy')} className="text-gray-600 hover:text-primary-600 transition-colors">Privacy Policy</button></li>
                 <li><button onClick={() => handleNav('guidelines')} className="text-gray-600 hover:text-primary-600 transition-colors">Usage Guidelines</button></li>
@@ -192,19 +236,16 @@ export default function App() {
           </div>
 
           {/* Bottom Bar */}
-          <div className="border-t border-gray-200 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p className="text-xs text-gray-500 text-center sm:text-left">
+          <div className="border-t border-gray-200 pt-4 sm:pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <p className="text-[10px] sm:text-xs text-gray-500 text-center sm:text-left">
               © 2024-2026 Souvik Barui. Built with ❤️ for healthcare AI research.
             </p>
-            <p className="text-xs text-gray-400 text-center sm:text-right">
+            <p className="text-[10px] sm:text-xs text-gray-400 text-center sm:text-right">
               Heart Disease Risk Prediction System v2.0.0
             </p>
           </div>
         </div>
       </footer>
-
-      {/* Mobile Footer Spacer */}
-      <div className="sm:hidden h-20" />
     </div>
   )
 }

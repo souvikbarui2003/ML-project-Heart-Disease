@@ -1,15 +1,16 @@
 {
-  "name": "Heart Disease Risk Prediction — Explainable ML Framework",
+  "name": "HeartGuard ML — Heart Disease Risk Prediction",
   "short_name": "HeartGuard ML",
   "description": "An explainable machine learning framework for heart disease risk prediction using public health data",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f9fafb",
-  "theme_color": "#1e40af",
+  "theme_color": "#e94560",
   "orientation": "any",
   "scope": "/",
   "lang": "en",
   "categories": ["medical", "education", "utilities"],
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icons/icon-72.png",
@@ -86,19 +87,43 @@
     {
       "name": "Risk Prediction",
       "short_name": "Predict",
+      "description": "Get a heart disease risk prediction",
       "url": "/?page=predict",
       "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
     },
     {
       "name": "Model Dashboard",
       "short_name": "Dashboard",
+      "description": "View model performance metrics",
       "url": "/?page=dashboard",
       "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
     },
     {
       "name": "Research Paper",
       "short_name": "Research",
+      "description": "Read the full research documentation",
       "url": "/?page=research",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Usage Guidelines",
+      "short_name": "Guidelines",
+      "description": "Learn how to use the application",
+      "url": "/?page=guidelines",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Terms & Conditions",
+      "short_name": "Terms",
+      "description": "View terms and conditions",
+      "url": "/?page=terms",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Privacy Policy",
+      "short_name": "Privacy",
+      "description": "View privacy policy",
+      "url": "/?page=privacy",
       "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
     }
   ]
