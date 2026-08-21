@@ -132,9 +132,12 @@ export default function App() {
                 <div className="px-4 py-2 bg-gray-50 rounded-xl">
                   <p className="text-xs font-semibold text-gray-800">Souvik Barui</p>
                   <p className="text-[10px] text-gray-500">Research & Development</p>
-                  <a href="https://github.com/souvikbarui2003" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[10px] text-primary-600 hover:underline mt-1">
-                    <Github className="w-3 h-3" />GitHub Profile
-                  </a>
+                <a href="https://github.com/souvikbarui2003" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-[10px] text-primary-600 hover:underline mt-1">
+                  <Github className="w-3 h-3" />GitHub Profile
+                </a>
+                <a href="mailto:projectmakersb@gmail.com" className="inline-flex items-center gap-1 text-[10px] text-primary-600 hover:underline mt-1">
+                  ✉️ Email Developer
+                </a>
                 </div>
               </div>
             </div>
@@ -207,6 +210,9 @@ export default function App() {
                 <p className="text-xs text-gray-500">Research & Development</p>
                 <a href="https://github.com/souvikbarui2003" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs text-primary-600 hover:underline mt-1">
                   <Github className="w-3 h-3" />github.com/souvikbarui2003
+                </a>
+                <a href="mailto:projectmakersb@gmail.com" className="inline-flex items-center gap-1 text-xs text-primary-600 hover:underline mt-1">
+                  ✉️ projectmakersb@gmail.com
                 </a>
               </div>
             </div>
